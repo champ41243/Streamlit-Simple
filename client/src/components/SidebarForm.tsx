@@ -24,6 +24,8 @@ export function SidebarForm() {
       splicingTeam: "",
       name: "",
       jobId: "",
+      bjOrSite: "",
+      routing: "",
       date: new Date().toISOString().split('T')[0],
       status: false,
       effect: "",
@@ -48,6 +50,8 @@ export function SidebarForm() {
           splicingTeam: "",
           name: "",
           jobId: "",
+          bjOrSite: "",
+          routing: "",
           date: new Date().toISOString().split('T')[0],
           status: false,
           effect: "",
@@ -137,6 +141,30 @@ export function SidebarForm() {
               className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
               placeholder="e.g. JOB-001"
             />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">BJ. Or Site *</label>
+            <input
+              {...form.register("bjOrSite")}
+              className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              placeholder="e.g. Site A"
+            />
+            {form.formState.errors.bjOrSite && (
+              <p className="text-xs text-destructive">{form.formState.errors.bjOrSite.message}</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Routing *</label>
+            <input
+              {...form.register("routing")}
+              className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              placeholder="e.g. Route 1"
+            />
+            {form.formState.errors.routing && (
+              <p className="text-xs text-destructive">{form.formState.errors.routing.message}</p>
+            )}
           </div>
 
           <div className="space-y-2">

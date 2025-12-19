@@ -62,31 +62,37 @@ async function seedDatabase() {
     if (existing.length === 0) {
     const seedData = [
       {
-        zone: "Zone A",
+        zone: "SCT",
         chainNo: "CH001",
         splicingTeam: "Team 1",
         name: "John Smith",
         jobId: "JOB-001",
+        bjOrSite: "BJ-001",
+        routing: "Route-A",
         date: "2025-12-15",
         status: true,
         effect: "Excellent connection quality"
       },
       {
-        zone: "Zone B",
+        zone: "CWT",
         chainNo: "CH002",
         splicingTeam: "Team 2",
         name: "Jane Doe",
         jobId: "JOB-002",
+        bjOrSite: "Site-B",
+        routing: "Route-B",
         date: "2025-12-16",
         status: true,
         effect: "Minor adjustments needed"
       },
       {
-        zone: "Zone A",
+        zone: "TWA",
         chainNo: "CH003",
         splicingTeam: "Team 1",
         name: "Mike Johnson",
         jobId: "JOB-003",
+        bjOrSite: "BJ-003",
+        routing: "Route-C",
         date: "2025-12-17",
         status: false,
         effect: "Pending review"

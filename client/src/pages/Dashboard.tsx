@@ -135,6 +135,8 @@ export default function Dashboard() {
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Team</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Name</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Job ID</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">BJ. Or Site</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Routing</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Date</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Begin</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">End</th>
@@ -152,6 +154,8 @@ export default function Dashboard() {
                       <td className="px-4 py-3 text-sm">{row.splicingTeam}</td>
                       <td className="px-4 py-3 font-medium">{row.name}</td>
                       <td className="px-4 py-3 font-mono text-sm text-muted-foreground">{row.jobId}</td>
+                      <td className="px-4 py-3 text-sm">{row.bjOrSite}</td>
+                      <td className="px-4 py-3 text-sm">{row.routing}</td>
                       <td className="px-4 py-3 text-sm">{row.date}</td>
                       <td className="px-4 py-3 font-mono text-sm">{row.timeBegin}</td>
                       <td className="px-4 py-3 font-mono text-sm">{row.timeFinished}</td>
@@ -201,7 +205,7 @@ export default function Dashboard() {
                   ))}
                   {reports.length === 0 && (
                     <tr>
-                      <td colSpan={12} className="px-6 py-12 text-center text-muted-foreground">
+                      <td colSpan={14} className="px-6 py-12 text-center text-muted-foreground">
                         No reports yet. Add a new entry using the form above.
                       </td>
                     </tr>
