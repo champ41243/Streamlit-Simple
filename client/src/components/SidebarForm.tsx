@@ -79,11 +79,22 @@ export function SidebarForm() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">Zone *</label>
-            <input
+            <select
               {...form.register("zone")}
               className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-              placeholder="e.g. Zone A"
-            />
+            >
+              <option value="">Select a zone</option>
+              <option value="SCT">SCT</option>
+              <option value="CWT">CWT</option>
+              <option value="TWA">TWA</option>
+              <option value="ONT">ONT</option>
+              <option value="CW">CW</option>
+              <option value="CN">CN</option>
+              <option value="ER">ER</option>
+              <option value="NR">NR</option>
+              <option value="NER">NER</option>
+              <option value="SR">SR</option>
+            </select>
             {form.formState.errors.zone && (
               <p className="text-xs text-destructive">{form.formState.errors.zone.message}</p>
             )}
