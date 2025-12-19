@@ -39,6 +39,15 @@ export async function registerRoutes(
     res.status(204).send();
   });
 
+  app.patch("/api/reports/:id/complete", async (req, res) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "Invalid ID" });
+    }
+    const report = await storage.completeReport(id);
+    res.json(report);
+  });
+
   // Seed data (wrapped in try-catch for first run)
   seedDatabase().catch(err => {
     console.log("Seed will run after schema migration:", err.message);
@@ -59,8 +68,6 @@ async function seedDatabase() {
         name: "John Smith",
         jobId: "JOB-001",
         date: "2025-12-15",
-        timeBegin: "08:00",
-        timeFinished: "12:00",
         status: true,
         effect: "Excellent connection quality"
       },
@@ -71,8 +78,6 @@ async function seedDatabase() {
         name: "Jane Doe",
         jobId: "JOB-002",
         date: "2025-12-16",
-        timeBegin: "09:00",
-        timeFinished: "13:30",
         status: true,
         effect: "Minor adjustments needed"
       },
@@ -83,8 +88,6 @@ async function seedDatabase() {
         name: "Mike Johnson",
         jobId: "JOB-003",
         date: "2025-12-17",
-        timeBegin: "10:00",
-        timeFinished: "14:00",
         status: false,
         effect: "Pending review"
       },

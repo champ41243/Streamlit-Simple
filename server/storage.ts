@@ -6,6 +6,7 @@ export interface IStorage {
   getReports(): Promise<Report[]>;
   createReport(report: InsertReport): Promise<Report>;
   deleteReport(id: number): Promise<void>;
+  completeReport(id: number): Promise<Report>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -20,6 +21,20 @@ export class DatabaseStorage implements IStorage {
 
   async deleteReport(id: number): Promise<void> {
     await db.delete(reports).where(eq(reports.id, id));
+  }
+
+  async completeReport(id: number): Promise<Report> {
+    const now = new Date().toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: false 
+    });
+    const [updated] = await db
+      .update(reports)
+      .set({ status: true, timeFinished: now })
+      .where(eq(reports.id, id))
+      .returning();
+    return updated;
   }
 }
 

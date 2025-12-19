@@ -10,14 +10,15 @@ export const reports = pgTable("reports", {
   name: text("name").notNull(),
   jobId: text("job_id").notNull(),
   date: text("date").notNull(),
-  timeBegin: text("time_begin").notNull(),
-  timeFinished: text("time_finished").notNull(),
+  timeBegin: text("time_begin"),
+  timeFinished: text("time_finished"),
   status: boolean("status").notNull(), // true = Complete, false = Not Complete
   effect: text("effect").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertReportSchema = createInsertSchema(reports).omit({ id: true, createdAt: true });
+export const insertReportSchema = createInsertSchema(reports)
+  .omit({ id: true, createdAt: true, timeBegin: true, timeFinished: true });
 
 export type Report = typeof reports.$inferSelect;
 export type InsertReport = z.infer<typeof insertReportSchema>;

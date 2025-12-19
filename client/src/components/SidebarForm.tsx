@@ -25,15 +25,18 @@ export function SidebarForm() {
       name: "",
       jobId: "",
       date: new Date().toISOString().split('T')[0],
-      timeBegin: "08:00",
-      timeFinished: "17:00",
-      status: true,
+      status: false,
       effect: "",
     },
   });
 
   const onSubmit = (data: FormValues) => {
-    createReport(data, {
+    const timeBegin = new Date().toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: false 
+    });
+    createReport({ ...data, timeBegin }, {
       onSuccess: () => {
         toast({
           title: "Success",
@@ -46,9 +49,7 @@ export function SidebarForm() {
           name: "",
           jobId: "",
           date: new Date().toISOString().split('T')[0],
-          timeBegin: "08:00",
-          timeFinished: "17:00",
-          status: true,
+          status: false,
           effect: "",
         });
       },
@@ -136,36 +137,6 @@ export function SidebarForm() {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Begin Time *</label>
-              <input
-                type="time"
-                {...form.register("timeBegin")}
-                className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">End Time *</label>
-              <input
-                type="time"
-                {...form.register("timeFinished")}
-                className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">Status</label>
-            <div className="flex items-center gap-3 bg-white border border-border rounded-md p-3">
-              <input
-                type="checkbox"
-                {...form.register("status")}
-                className="w-4 h-4 rounded accent-primary cursor-pointer"
-              />
-              <span className="text-sm text-foreground">Mark as Complete</span>
-            </div>
-          </div>
 
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">Effect / Notes</label>

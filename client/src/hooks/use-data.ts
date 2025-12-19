@@ -58,3 +58,24 @@ export function useDeleteReport() {
     },
   });
 }
+
+export function useCompleteReport() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: number) => {
+      const res = await fetch(`/api/reports/${id}/complete`, {
+        method: "PATCH",
+        credentials: "include",
+      });
+      
+      if (!res.ok) {
+        if (res.status === 404) throw new Error("Report not found");
+        throw new Error("Failed to complete report");
+      }
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.reports.list.path] });
+    },
+  });
+}

@@ -1,15 +1,17 @@
-import { useReports, useDeleteReport } from "@/hooks/use-data";
+import { useReports, useDeleteReport, useCompleteReport } from "@/hooks/use-data";
 import { SidebarForm } from "@/components/SidebarForm";
 import { KPICard } from "@/components/KPICard";
-import { Loader2, Trash2, ArrowRight } from "lucide-react";
+import { Loader2, Trash2, ArrowRight, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
 export default function Dashboard() {
   const { data: reports, isLoading, isError } = useReports();
   const { mutate: deleteReport } = useDeleteReport();
+  const { mutate: completeReport } = useCompleteReport();
   const { toast } = useToast();
   const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [completeId, setCompleteId] = useState<number | null>(null);
 
   if (isLoading) {
     return (
@@ -45,6 +47,17 @@ export default function Dashboard() {
         setDeleteId(null);
       },
       onError: () => setDeleteId(null)
+    });
+  };
+
+  const handleComplete = (id: number) => {
+    setCompleteId(id);
+    completeReport(id, {
+      onSuccess: () => {
+        toast({ title: "Completed", description: "Report marked as complete." });
+        setCompleteId(null);
+      },
+      onError: () => setCompleteId(null)
     });
   };
 
@@ -128,6 +141,7 @@ export default function Dashboard() {
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Status</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Effect</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-right">Actions</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-right">Complete</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/30 bg-white">
@@ -167,11 +181,27 @@ export default function Dashboard() {
                           )}
                         </button>
                       </td>
+                      <td className="px-4 py-3 text-right">
+                        {!row.status && (
+                          <button
+                            onClick={() => handleComplete(row.id)}
+                            disabled={completeId === row.id}
+                            className="text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 p-2 rounded-md transition-all duration-200"
+                            title="Mark as complete"
+                          >
+                            {completeId === row.id ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <CheckCircle className="w-4 h-4" />
+                            )}
+                          </button>
+                        )}
+                      </td>
                     </tr>
                   ))}
                   {reports.length === 0 && (
                     <tr>
-                      <td colSpan={11} className="px-6 py-12 text-center text-muted-foreground">
+                      <td colSpan={12} className="px-6 py-12 text-center text-muted-foreground">
                         No reports yet. Add a new entry using the form above.
                       </td>
                     </tr>
