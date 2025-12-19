@@ -9,16 +9,16 @@ export async function registerRoutes(
   app: Express
 ): Promise<Server> {
 
-  app.get(api.data.list.path, async (req, res) => {
-    const data = await storage.getDataPoints();
+  app.get(api.reports.list.path, async (req, res) => {
+    const data = await storage.getReports();
     res.json(data);
   });
 
-  app.post(api.data.create.path, async (req, res) => {
+  app.post(api.reports.create.path, async (req, res) => {
     try {
-      const input = api.data.create.input.parse(req.body);
-      const data = await storage.createDataPoint(input);
-      res.status(201).json(data);
+      const input = api.reports.create.input.parse(req.body);
+      const report = await storage.createReport(input);
+      res.status(201).json(report);
     } catch (err) {
       if (err instanceof z.ZodError) {
         return res.status(400).json({
@@ -30,43 +30,72 @@ export async function registerRoutes(
     }
   });
 
-  app.delete(api.data.delete.path, async (req, res) => {
+  app.delete(api.reports.delete.path, async (req, res) => {
     const id = parseInt(req.params.id);
     if (isNaN(id)) {
       return res.status(400).json({ message: "Invalid ID" });
     }
-    await storage.deleteDataPoint(id);
+    await storage.deleteReport(id);
     res.status(204).send();
   });
 
-  // Seed data
-  seedDatabase();
+  // Seed data (wrapped in try-catch for first run)
+  seedDatabase().catch(err => {
+    console.log("Seed will run after schema migration:", err.message);
+  });
 
   return httpServer;
 }
 
 async function seedDatabase() {
-  const existing = await storage.getDataPoints();
-  if (existing.length === 0) {
+  try {
+    const existing = await storage.getReports();
+    if (existing.length === 0) {
     const seedData = [
-      { label: "Jan", value: 400, category: "Sales" },
-      { label: "Feb", value: 300, category: "Sales" },
-      { label: "Mar", value: 200, category: "Sales" },
-      { label: "Apr", value: 278, category: "Sales" },
-      { label: "May", value: 189, category: "Sales" },
-      { label: "Jan", value: 240, category: "Traffic" },
-      { label: "Feb", value: 139, category: "Traffic" },
-      { label: "Mar", value: 980, category: "Traffic" },
-      { label: "Apr", value: 390, category: "Traffic" },
-      { label: "May", value: 480, category: "Traffic" },
-      { label: "Q1", value: 2000, category: "Revenue" },
-      { label: "Q2", value: 2400, category: "Revenue" },
-      { label: "Q3", value: 2100, category: "Revenue" },
+      {
+        zone: "Zone A",
+        chainNo: "CH001",
+        splicingTeam: "Team 1",
+        name: "John Smith",
+        jobId: "JOB-001",
+        date: "2025-12-15",
+        timeBegin: "08:00",
+        timeFinished: "12:00",
+        status: true,
+        effect: "Excellent connection quality"
+      },
+      {
+        zone: "Zone B",
+        chainNo: "CH002",
+        splicingTeam: "Team 2",
+        name: "Jane Doe",
+        jobId: "JOB-002",
+        date: "2025-12-16",
+        timeBegin: "09:00",
+        timeFinished: "13:30",
+        status: true,
+        effect: "Minor adjustments needed"
+      },
+      {
+        zone: "Zone A",
+        chainNo: "CH003",
+        splicingTeam: "Team 1",
+        name: "Mike Johnson",
+        jobId: "JOB-003",
+        date: "2025-12-17",
+        timeBegin: "10:00",
+        timeFinished: "14:00",
+        status: false,
+        effect: "Pending review"
+      },
     ];
     
     for (const item of seedData) {
-      await storage.createDataPoint(item);
+      await storage.createReport(item);
     }
-    console.log("Database seeded with initial data");
+    console.log("Database seeded with initial report data");
+    }
+  } catch (err) {
+    console.log("Schema not yet created - will seed after migration");
   }
 }

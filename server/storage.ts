@@ -1,25 +1,25 @@
 import { db } from "./db";
-import { dataPoints, type InsertDataPoint, type DataPoint } from "@shared/schema";
+import { reports, type InsertReport, type Report } from "@shared/schema";
 import { eq } from "drizzle-orm";
 
 export interface IStorage {
-  getDataPoints(): Promise<DataPoint[]>;
-  createDataPoint(point: InsertDataPoint): Promise<DataPoint>;
-  deleteDataPoint(id: number): Promise<void>;
+  getReports(): Promise<Report[]>;
+  createReport(report: InsertReport): Promise<Report>;
+  deleteReport(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
-  async getDataPoints(): Promise<DataPoint[]> {
-    return await db.select().from(dataPoints).orderBy(dataPoints.id);
+  async getReports(): Promise<Report[]> {
+    return await db.select().from(reports).orderBy(reports.id);
   }
 
-  async createDataPoint(point: InsertDataPoint): Promise<DataPoint> {
-    const [newItem] = await db.insert(dataPoints).values(point).returning();
-    return newItem;
+  async createReport(report: InsertReport): Promise<Report> {
+    const [newReport] = await db.insert(reports).values(report).returning();
+    return newReport;
   }
 
-  async deleteDataPoint(id: number): Promise<void> {
-    await db.delete(dataPoints).where(eq(dataPoints.id, id));
+  async deleteReport(id: number): Promise<void> {
+    await db.delete(reports).where(eq(reports.id, id));
   }
 }
 

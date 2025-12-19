@@ -1,24 +1,13 @@
-import { useDataPoints, useDeleteDataPoint } from "@/hooks/use-data";
+import { useReports, useDeleteReport } from "@/hooks/use-data";
 import { SidebarForm } from "@/components/SidebarForm";
 import { KPICard } from "@/components/KPICard";
-import { 
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  BarChart, Bar, Legend, Cell 
-} from "recharts";
 import { Loader2, Trash2, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
-const CATEGORY_COLORS: Record<string, string> = {
-  Sales: "#ec4899",   // Pink
-  Users: "#3b82f6",   // Blue
-  Traffic: "#8b5cf6", // Violet
-  Revenue: "#f43f5e", // Rose (Primary)
-};
-
 export default function Dashboard() {
-  const { data: dataPoints, isLoading, isError } = useDataPoints();
-  const { mutate: deleteData } = useDeleteDataPoint();
+  const { data: reports, isLoading, isError } = useReports();
+  const { mutate: deleteReport } = useDeleteReport();
   const { toast } = useToast();
   const [deleteId, setDeleteId] = useState<number | null>(null);
 
@@ -26,37 +15,33 @@ export default function Dashboard() {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-slate-50">
         <Loader2 className="h-10 w-10 animate-spin text-primary" />
-        <span className="ml-3 text-lg font-medium text-muted-foreground">Loading dashboard...</span>
+        <span className="ml-3 text-lg font-medium text-muted-foreground">Loading reports...</span>
       </div>
     );
   }
 
-  if (isError || !dataPoints) {
+  if (isError || !reports) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-red-50">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-red-800 mb-2">Error loading data</h2>
+          <h2 className="text-2xl font-bold text-red-800 mb-2">Error loading reports</h2>
           <p className="text-red-600">Please check your connection and try again.</p>
         </div>
       </div>
     );
   }
 
-  // Calculate KPIs
-  const totalValue = dataPoints.reduce((sum, item) => sum + item.value, 0);
-  const avgValue = dataPoints.length > 0 ? Math.round(totalValue / dataPoints.length) : 0;
-  const count = dataPoints.length;
-
-  // Prepare Chart Data
-  const chartData = [...dataPoints].sort((a, b) => 
-    new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime()
-  );
+  // Calculate stats
+  const totalReports = reports.length;
+  const completeCount = reports.filter(r => r.status === true).length;
+  const incompleteCount = reports.filter(r => r.status === false).length;
+  const completionRate = totalReports > 0 ? Math.round((completeCount / totalReports) * 100) : 0;
 
   const handleDelete = (id: number) => {
     setDeleteId(id);
-    deleteData(id, {
+    deleteReport(id, {
       onSuccess: () => {
-        toast({ title: "Deleted", description: "Row removed successfully." });
+        toast({ title: "Deleted", description: "Report removed successfully." });
         setDeleteId(null);
       },
       onError: () => setDeleteId(null)
@@ -77,127 +62,47 @@ export default function Dashboard() {
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1 className="text-4xl font-bold text-foreground tracking-tight font-display">Executive Overview</h1>
-              <p className="text-muted-foreground mt-2 text-lg">Real-time performance metrics and analytics.</p>
+              <h1 className="text-4xl font-bold text-foreground tracking-tight font-display">Splicing Reports</h1>
+              <p className="text-muted-foreground mt-2 text-lg">Track splicing team work and job status.</p>
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground bg-white px-3 py-1.5 rounded-full border shadow-sm">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              Live Connection
+              Live Data
             </div>
           </div>
 
           {/* KPI Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <KPICard 
-              title="Total Metrics Value" 
-              value={totalValue.toLocaleString()} 
-              description="Sum of all recorded data points"
-              icon="trend"
+              title="Total Reports" 
+              value={totalReports} 
+              description="Total entries recorded"
+              icon="default"
             />
             <KPICard 
-              title="Average Performance" 
-              value={avgValue.toLocaleString()} 
-              description="Mean value across all categories"
+              title="Completed" 
+              value={completeCount} 
+              description={`${completionRate}% completion rate`}
               icon="activity"
             />
             <KPICard 
-              title="Total Records" 
-              value={count} 
-              description="Number of data entries in database"
+              title="Pending" 
+              value={incompleteCount} 
+              description="Awaiting completion"
+              icon="trend"
             />
           </div>
 
-          {/* Charts Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Line Chart */}
-            <div className="chart-container">
-              <div className="mb-6">
-                <h3 className="text-lg font-bold text-foreground">Trend Analysis</h3>
-                <p className="text-sm text-muted-foreground">Value progression over time</p>
-              </div>
-              <div className="h-[300px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                    <XAxis 
-                      dataKey="label" 
-                      tick={{fontSize: 12, fill: '#64748b'}} 
-                      axisLine={false}
-                      tickLine={false}
-                      dy={10}
-                    />
-                    <YAxis 
-                      tick={{fontSize: 12, fill: '#64748b'}} 
-                      axisLine={false}
-                      tickLine={false}
-                      dx={-10}
-                    />
-                    <Tooltip 
-                      contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                      cursor={{ stroke: '#cbd5e1', strokeWidth: 1 }}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="value" 
-                      stroke="hsl(var(--primary))" 
-                      strokeWidth={3}
-                      dot={{ fill: 'hsl(var(--primary))', strokeWidth: 2, r: 4, stroke: '#fff' }}
-                      activeDot={{ r: 6, strokeWidth: 0 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-
-            {/* Bar Chart */}
-            <div className="chart-container">
-              <div className="mb-6">
-                <h3 className="text-lg font-bold text-foreground">Category Distribution</h3>
-                <p className="text-sm text-muted-foreground">Value breakdown by category</p>
-              </div>
-              <div className="h-[300px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                    <XAxis 
-                      dataKey="category" 
-                      tick={{fontSize: 12, fill: '#64748b'}} 
-                      axisLine={false}
-                      tickLine={false}
-                      dy={10}
-                    />
-                    <YAxis 
-                      tick={{fontSize: 12, fill: '#64748b'}} 
-                      axisLine={false}
-                      tickLine={false}
-                      dx={-10}
-                    />
-                    <Tooltip 
-                      cursor={{fill: 'transparent'}}
-                      contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    />
-                    <Legend iconType="circle" />
-                    <Bar dataKey="value" radius={[4, 4, 0, 0]} animationDuration={1000}>
-                      {chartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={CATEGORY_COLORS[entry.category] || "#94a3b8"} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-          </div>
-
-          {/* Data Table */}
+          {/* Reports Table */}
           <div className="bg-white rounded-xl border border-border/60 shadow-sm overflow-hidden">
             <div className="p-6 border-b border-border/40 flex justify-between items-center bg-slate-50/30">
               <div>
-                <h3 className="text-lg font-bold text-foreground">Raw Data</h3>
-                <p className="text-sm text-muted-foreground">Detailed view of all records</p>
+                <h3 className="text-lg font-bold text-foreground">Report Entries</h3>
+                <p className="text-sm text-muted-foreground">Complete list of all splicing work records</p>
               </div>
               <button 
                 className="text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 transition-colors"
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} // Simple scroll top for now
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               >
                 Back to top <ArrowRight className="w-4 h-4" />
               </button>
@@ -207,36 +112,48 @@ export default function Dashboard() {
               <table className="w-full text-left text-sm">
                 <thead>
                   <tr className="border-b border-border/50 bg-slate-50/50 text-muted-foreground">
-                    <th className="px-6 py-4 font-medium uppercase tracking-wider text-xs">ID</th>
-                    <th className="px-6 py-4 font-medium uppercase tracking-wider text-xs">Label</th>
-                    <th className="px-6 py-4 font-medium uppercase tracking-wider text-xs">Category</th>
-                    <th className="px-6 py-4 font-medium uppercase tracking-wider text-xs text-right">Value</th>
-                    <th className="px-6 py-4 font-medium uppercase tracking-wider text-xs text-right">Actions</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Zone</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Chain No</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Team</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Name</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Job ID</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Date</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Begin</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">End</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Status</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Effect</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/30 bg-white">
-                  {dataPoints.map((row) => (
+                  {reports.map((row) => (
                     <tr key={row.id} className="hover:bg-slate-50 transition-colors">
-                      <td className="px-6 py-4 font-mono text-muted-foreground text-xs">#{row.id}</td>
-                      <td className="px-6 py-4 font-medium text-foreground">{row.label}</td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-3 font-medium text-foreground">{row.zone}</td>
+                      <td className="px-4 py-3 font-mono text-sm">{row.chainNo}</td>
+                      <td className="px-4 py-3 text-sm">{row.splicingTeam}</td>
+                      <td className="px-4 py-3 font-medium">{row.name}</td>
+                      <td className="px-4 py-3 font-mono text-sm text-muted-foreground">{row.jobId}</td>
+                      <td className="px-4 py-3 text-sm">{row.date}</td>
+                      <td className="px-4 py-3 font-mono text-sm">{row.timeBegin}</td>
+                      <td className="px-4 py-3 font-mono text-sm">{row.timeFinished}</td>
+                      <td className="px-4 py-3">
                         <span 
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-                          style={{
-                            backgroundColor: `${CATEGORY_COLORS[row.category]}15`, // 15% opacity
-                            color: CATEGORY_COLORS[row.category]
-                          }}
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            row.status 
+                              ? 'bg-emerald-100 text-emerald-800' 
+                              : 'bg-slate-100 text-slate-600'
+                          }`}
                         >
-                          {row.category}
+                          {row.status ? 'Complete' : 'Not Complete'}
                         </span>
                       </td>
-                      <td className="px-6 py-4 font-mono text-right">{row.value.toLocaleString()}</td>
-                      <td className="px-6 py-4 text-right">
+                      <td className="px-4 py-3 text-sm text-muted-foreground max-w-xs truncate">{row.effect}</td>
+                      <td className="px-4 py-3 text-right">
                         <button
                           onClick={() => handleDelete(row.id)}
                           disabled={deleteId === row.id}
                           className="text-slate-400 hover:text-destructive hover:bg-destructive/10 p-2 rounded-md transition-all duration-200"
-                          title="Delete record"
+                          title="Delete report"
                         >
                           {deleteId === row.id ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
@@ -247,10 +164,10 @@ export default function Dashboard() {
                       </td>
                     </tr>
                   ))}
-                  {dataPoints.length === 0 && (
+                  {reports.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground">
-                        No data available. Add some metrics from the sidebar.
+                      <td colSpan={11} className="px-6 py-12 text-center text-muted-foreground">
+                        No reports yet. Add a new entry from the sidebar.
                       </td>
                     </tr>
                   )}
@@ -260,10 +177,6 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
-
-      {/* Mobile Form Sheet - Visible only on small screens */}
-      {/* For simplicity in this iteration, sidebar is hidden on mobile, 
-          in a real app we'd add a Sheet trigger here */}
     </div>
   );
 }

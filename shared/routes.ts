@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { insertDataPointSchema, dataPoints } from './schema';
+import { insertReportSchema, reports } from './schema';
 
 export const errorSchemas = {
   validation: z.object({
@@ -15,26 +15,26 @@ export const errorSchemas = {
 };
 
 export const api = {
-  data: {
+  reports: {
     list: {
       method: 'GET' as const,
-      path: '/api/data',
+      path: '/api/reports',
       responses: {
-        200: z.array(z.custom<typeof dataPoints.$inferSelect>()),
+        200: z.array(z.custom<typeof reports.$inferSelect>()),
       },
     },
     create: {
       method: 'POST' as const,
-      path: '/api/data',
-      input: insertDataPointSchema,
+      path: '/api/reports',
+      input: insertReportSchema,
       responses: {
-        201: z.custom<typeof dataPoints.$inferSelect>(),
+        201: z.custom<typeof reports.$inferSelect>(),
         400: errorSchemas.validation,
       },
     },
     delete: {
       method: 'DELETE' as const,
-      path: '/api/data/:id',
+      path: '/api/reports/:id',
       responses: {
         204: z.void(),
         404: errorSchemas.notFound,
@@ -55,5 +55,5 @@ export function buildUrl(path: string, params?: Record<string, string | number>)
   return url;
 }
 
-export type DataPointInput = z.infer<typeof api.data.create.input>;
-export type DataPointResponse = z.infer<typeof api.data.create.responses[201]>;
+export type ReportInput = z.infer<typeof api.reports.create.input>;
+export type ReportResponse = z.infer<typeof api.reports.create.responses[201]>;
