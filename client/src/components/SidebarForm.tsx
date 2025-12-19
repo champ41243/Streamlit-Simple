@@ -63,7 +63,7 @@ export function SidebarForm() {
   };
 
   return (
-    <div className="w-full h-full flex flex-col bg-slate-50 border-r border-border/60">
+    <div className="w-full flex flex-col bg-slate-50 border-r border-border/60 md:h-full">
       <div className="p-6 border-b border-border/40">
         <div className="flex items-center gap-2 text-primary font-bold text-xl font-display">
           <FileText className="w-6 h-6" />
@@ -74,7 +74,7 @@ export function SidebarForm() {
         </p>
       </div>
 
-      <div className="p-6 flex-1 overflow-y-auto">
+      <div className="p-6 md:flex-1 md:overflow-y-auto">
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">Zone *</label>
@@ -192,7 +192,7 @@ export function SidebarForm() {
         </form>
       </div>
       
-      <div className="p-4 border-t border-border/40 bg-white/50 text-xs text-center text-muted-foreground font-mono">
+      <div className="p-4 border-t border-border/40 bg-white/50 text-xs text-center text-muted-foreground font-mono hidden md:block">
         Report Management • v1.0.0
       </div>
     </div>

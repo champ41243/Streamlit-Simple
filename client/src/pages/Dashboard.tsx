@@ -93,6 +93,11 @@ export default function Dashboard() {
             />
           </div>
 
+          {/* Mobile Form - shown only on mobile */}
+          <div className="md:hidden bg-white rounded-xl border border-border/60 shadow-sm overflow-hidden">
+            <SidebarForm />
+          </div>
+
           {/* Reports Table */}
           <div className="bg-white rounded-xl border border-border/60 shadow-sm overflow-hidden">
             <div className="p-6 border-b border-border/40 flex justify-between items-center bg-slate-50/30">
@@ -167,7 +172,7 @@ export default function Dashboard() {
                   {reports.length === 0 && (
                     <tr>
                       <td colSpan={11} className="px-6 py-12 text-center text-muted-foreground">
-                        No reports yet. Add a new entry from the sidebar.
+                        No reports yet. Add a new entry using the form above.
                       </td>
                     </tr>
                   )}
