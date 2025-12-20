@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { insertReportSchema, reports } from './schema';
+import { insertReportSchema, updateReportSchema, reports } from './schema';
 
 export const errorSchemas = {
   validation: z.object({
@@ -37,6 +37,16 @@ export const api = {
       path: '/api/reports/:id',
       responses: {
         204: z.void(),
+        404: errorSchemas.notFound,
+      },
+    },
+    update: {
+      method: 'PATCH' as const,
+      path: '/api/reports/:id',
+      input: updateReportSchema,
+      responses: {
+        200: z.custom<typeof reports.$inferSelect>(),
+        400: errorSchemas.validation,
         404: errorSchemas.notFound,
       },
     },

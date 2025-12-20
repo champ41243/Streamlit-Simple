@@ -7,6 +7,7 @@ export interface IStorage {
   createReport(report: InsertReport): Promise<Report>;
   deleteReport(id: number): Promise<void>;
   completeReport(id: number): Promise<Report>;
+  updateReport(id: number, data: Partial<Report>): Promise<Report>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -32,6 +33,15 @@ export class DatabaseStorage implements IStorage {
     const [updated] = await db
       .update(reports)
       .set({ status: true, timeFinished: now })
+      .where(eq(reports.id, id))
+      .returning();
+    return updated;
+  }
+
+  async updateReport(id: number, data: Partial<Report>): Promise<Report> {
+    const [updated] = await db
+      .update(reports)
+      .set(data)
       .where(eq(reports.id, id))
       .returning();
     return updated;

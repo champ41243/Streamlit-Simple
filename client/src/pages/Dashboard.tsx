@@ -1,10 +1,12 @@
 import { useReports, useDeleteReport, useCompleteReport } from "@/hooks/use-data";
 import { SidebarForm } from "@/components/SidebarForm";
 import { KPICard } from "@/components/KPICard";
-import { Loader2, Trash2, ArrowRight, CheckCircle } from "lucide-react";
+import { Loader2, Trash2, ArrowRight, CheckCircle, Pencil } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { getZoneColor } from "@/lib/zoneColors";
+import { EditModal } from "@/components/EditModal";
+import type { Report } from "@shared/schema";
 
 export default function Dashboard() {
   const { data: reports, isLoading, isError } = useReports();
@@ -13,6 +15,7 @@ export default function Dashboard() {
   const { toast } = useToast();
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [completeId, setCompleteId] = useState<number | null>(null);
+  const [editingReport, setEditingReport] = useState<Report | null>(null);
 
   if (isLoading) {
     return (
@@ -181,6 +184,14 @@ export default function Dashboard() {
                       <td className="px-4 py-3 text-sm text-muted-foreground max-w-xs truncate">{row.effect}</td>
                       <td className="px-4 py-3 text-right flex items-center justify-end gap-2">
                         <button
+                          onClick={() => setEditingReport(row)}
+                          className="text-slate-400 hover:text-primary hover:bg-primary/10 p-2 rounded-md transition-all duration-200"
+                          title="Edit report"
+                          data-testid={`button-edit-${row.id}`}
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </button>
+                        <button
                           onClick={() => handleDelete(row.id)}
                           disabled={deleteId === row.id}
                           className="text-slate-400 hover:text-destructive hover:bg-destructive/10 p-2 rounded-md transition-all duration-200"
@@ -231,6 +242,14 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
+
+      {editingReport && (
+        <EditModal 
+          report={editingReport}
+          isOpen={Boolean(editingReport)}
+          onClose={() => setEditingReport(null)}
+        />
+      )}
     </div>
   );
 }

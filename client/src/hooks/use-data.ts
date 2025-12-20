@@ -79,3 +79,30 @@ export function useCompleteReport() {
     },
   });
 }
+
+export function useUpdateReport() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: number; data: Record<string, any> }) => {
+      const res = await fetch(`/api/reports/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
+      
+      if (!res.ok) {
+        if (res.status === 400) {
+          const error = await res.json();
+          throw new Error(error.message);
+        }
+        if (res.status === 404) throw new Error("Report not found");
+        throw new Error("Failed to update report");
+      }
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.reports.list.path] });
+    },
+  });
+}

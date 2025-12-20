@@ -8,6 +8,7 @@ import { Loader2, Plus, FileText } from "lucide-react";
 
 const formSchema = insertReportSchema.extend({
   status: z.boolean(),
+  problemDetails: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -29,6 +30,7 @@ export function SidebarForm() {
       date: new Date().toISOString().split('T')[0],
       status: false,
       effect: "",
+      problemDetails: "",
     },
   });
 
@@ -55,6 +57,7 @@ export function SidebarForm() {
           date: new Date().toISOString().split('T')[0],
           status: false,
           effect: "",
+          problemDetails: "",
         });
       },
       onError: (err) => {
@@ -176,6 +179,16 @@ export function SidebarForm() {
             />
           </div>
 
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Problem Details</label>
+            <textarea
+              {...form.register("problemDetails")}
+              className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
+              rows={2}
+              placeholder="Describe any issues or problems encountered"
+            />
+          </div>
 
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">Effect / Notes</label>

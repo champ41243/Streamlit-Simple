@@ -16,6 +16,7 @@ export const reports = pgTable("reports", {
   timeFinished: text("time_finished"),
   status: boolean("status").notNull(), // true = Complete, false = Not Complete
   effect: text("effect").notNull(),
+  problemDetails: text("problem_details"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -23,7 +24,23 @@ export const insertReportSchema = createInsertSchema(reports)
   .omit({ id: true, createdAt: true, timeBegin: true, timeFinished: true })
   .extend({
     timeBegin: z.string().optional(),
+    problemDetails: z.string().optional(),
   });
+
+export const updateReportSchema = z.object({
+  zone: z.string().optional(),
+  chainNo: z.string().optional(),
+  splicingTeam: z.string().optional(),
+  name: z.string().optional(),
+  jobId: z.string().optional(),
+  bjOrSite: z.string().optional(),
+  routing: z.string().optional(),
+  date: z.string().optional(),
+  timeFinished: z.string().optional(),
+  status: z.boolean().optional(),
+  effect: z.string().optional(),
+  problemDetails: z.string().optional(),
+});
 
 export type Report = typeof reports.$inferSelect;
 export type InsertReport = z.infer<typeof insertReportSchema>;
