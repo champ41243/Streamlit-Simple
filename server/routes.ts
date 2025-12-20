@@ -60,6 +60,9 @@ async function seedDatabase() {
   try {
     const existing = await storage.getReports();
     if (existing.length === 0) {
+    const timeBegin1 = "09:15";
+    const timeBegin2 = "10:30";
+    const timeBegin3 = "14:45";
     const seedData = [
       {
         zone: "SCT",
@@ -70,6 +73,7 @@ async function seedDatabase() {
         bjOrSite: "BJ-001",
         routing: "Route-A",
         date: "2025-12-15",
+        timeBegin: timeBegin1,
         status: true,
         effect: "Excellent connection quality"
       },
@@ -82,6 +86,7 @@ async function seedDatabase() {
         bjOrSite: "Site-B",
         routing: "Route-B",
         date: "2025-12-16",
+        timeBegin: timeBegin2,
         status: true,
         effect: "Minor adjustments needed"
       },
@@ -94,6 +99,7 @@ async function seedDatabase() {
         bjOrSite: "BJ-003",
         routing: "Route-C",
         date: "2025-12-17",
+        timeBegin: timeBegin3,
         status: false,
         effect: "Pending review"
       },

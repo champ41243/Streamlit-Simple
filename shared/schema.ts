@@ -20,7 +20,10 @@ export const reports = pgTable("reports", {
 });
 
 export const insertReportSchema = createInsertSchema(reports)
-  .omit({ id: true, createdAt: true, timeBegin: true, timeFinished: true });
+  .omit({ id: true, createdAt: true, timeBegin: true, timeFinished: true })
+  .extend({
+    timeBegin: z.string().optional(),
+  });
 
 export type Report = typeof reports.$inferSelect;
 export type InsertReport = z.infer<typeof insertReportSchema>;

@@ -143,7 +143,6 @@ export default function Dashboard() {
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Status</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Effect</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-right">Actions</th>
-                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-right">Complete</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/30 bg-white">
@@ -157,8 +156,8 @@ export default function Dashboard() {
                       <td className="px-4 py-3 text-sm">{row.bjOrSite}</td>
                       <td className="px-4 py-3 text-sm">{row.routing}</td>
                       <td className="px-4 py-3 text-sm">{row.date}</td>
-                      <td className="px-4 py-3 font-mono text-sm">{row.timeBegin || '-'}</td>
-                      <td className="px-4 py-3 font-mono text-sm">{row.status ? (row.timeFinished || '-') : '-'}</td>
+                      <td className="px-4 py-3 font-mono text-sm">{row.timeBegin}</td>
+                      <td className="px-4 py-3 font-mono text-sm">{row.status ? row.timeFinished : ''}</td>
                       <td className="px-4 py-3">
                         <span 
                           className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
@@ -171,12 +170,13 @@ export default function Dashboard() {
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm text-muted-foreground max-w-xs truncate">{row.effect}</td>
-                      <td className="px-4 py-3 text-right">
+                      <td className="px-4 py-3 text-right flex items-center justify-end gap-2">
                         <button
                           onClick={() => handleDelete(row.id)}
                           disabled={deleteId === row.id}
                           className="text-slate-400 hover:text-destructive hover:bg-destructive/10 p-2 rounded-md transition-all duration-200"
                           title="Delete report"
+                          data-testid={`button-delete-${row.id}`}
                         >
                           {deleteId === row.id ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
@@ -184,8 +184,6 @@ export default function Dashboard() {
                             <Trash2 className="w-4 h-4" />
                           )}
                         </button>
-                      </td>
-                      <td className="px-4 py-3 text-right">
                         {!row.status && (
                           <button
                             onClick={() => handleComplete(row.id)}
@@ -197,12 +195,12 @@ export default function Dashboard() {
                             {completeId === row.id ? (
                               <>
                                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                                <span>Finishing...</span>
+                                <span>Finish</span>
                               </>
                             ) : (
                               <>
                                 <CheckCircle className="w-3.5 h-3.5" />
-                                <span>Finish Job</span>
+                                <span>Finish</span>
                               </>
                             )}
                           </button>
@@ -212,7 +210,7 @@ export default function Dashboard() {
                   ))}
                   {reports.length === 0 && (
                     <tr>
-                      <td colSpan={14} className="px-6 py-12 text-center text-muted-foreground">
+                      <td colSpan={13} className="px-6 py-12 text-center text-muted-foreground">
                         No reports yet. Add a new entry using the form above.
                       </td>
                     </tr>
