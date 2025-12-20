@@ -157,8 +157,8 @@ export default function Dashboard() {
                       <td className="px-4 py-3 text-sm">{row.bjOrSite}</td>
                       <td className="px-4 py-3 text-sm">{row.routing}</td>
                       <td className="px-4 py-3 text-sm">{row.date}</td>
-                      <td className="px-4 py-3 font-mono text-sm">{row.timeBegin}</td>
-                      <td className="px-4 py-3 font-mono text-sm">{row.timeFinished}</td>
+                      <td className="px-4 py-3 font-mono text-sm">{row.timeBegin || '-'}</td>
+                      <td className="px-4 py-3 font-mono text-sm">{row.status ? (row.timeFinished || '-') : '-'}</td>
                       <td className="px-4 py-3">
                         <span 
                           className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
@@ -190,13 +190,20 @@ export default function Dashboard() {
                           <button
                             onClick={() => handleComplete(row.id)}
                             disabled={completeId === row.id}
-                            className="text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 p-2 rounded-md transition-all duration-200"
-                            title="Mark as complete"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800 text-xs font-medium transition-all duration-200 hover-elevate"
+                            title="Mark this job as complete"
+                            data-testid={`button-finish-job-${row.id}`}
                           >
                             {completeId === row.id ? (
-                              <Loader2 className="w-4 h-4 animate-spin" />
+                              <>
+                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                <span>Finishing...</span>
+                              </>
                             ) : (
-                              <CheckCircle className="w-4 h-4" />
+                              <>
+                                <CheckCircle className="w-3.5 h-3.5" />
+                                <span>Finish Job</span>
+                              </>
                             )}
                           </button>
                         )}
