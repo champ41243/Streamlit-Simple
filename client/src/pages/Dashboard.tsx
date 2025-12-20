@@ -146,6 +146,7 @@ export default function Dashboard() {
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">End</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Status</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Effect</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Problems</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-right">Actions</th>
                   </tr>
                 </thead>
@@ -182,6 +183,7 @@ export default function Dashboard() {
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm text-muted-foreground max-w-xs truncate">{row.effect}</td>
+                      <td className="px-4 py-3 text-sm text-muted-foreground max-w-xs truncate">{row.problemDetails || '-'}</td>
                       <td className="px-4 py-3 text-right flex items-center justify-end gap-2">
                         <button
                           onClick={() => setEditingReport(row)}
