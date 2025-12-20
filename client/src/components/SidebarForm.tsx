@@ -4,10 +4,12 @@ import { insertReportSchema } from "@shared/schema";
 import { useCreateReport } from "@/hooks/use-data";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
-import { Loader2, Plus, FileText } from "lucide-react";
+import { useState } from "react";
+import { Loader2, Plus, FileText, MapPin } from "lucide-react";
 
 const formSchema = insertReportSchema.extend({
   status: z.boolean(),
+  gpsCoordinates: z.string().optional(),
   problemDetails: z.string().optional(),
 });
 
@@ -16,6 +18,7 @@ type FormValues = z.infer<typeof formSchema>;
 export function SidebarForm() {
   const { mutate: createReport, isPending } = useCreateReport();
   const { toast } = useToast();
+  const [geoLoading, setGeoLoading] = useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -29,10 +32,43 @@ export function SidebarForm() {
       routing: "",
       date: new Date().toISOString().split('T')[0],
       status: false,
+      gpsCoordinates: "",
       effect: "",
       problemDetails: "",
     },
   });
+
+  const handleGetLocation = () => {
+    setGeoLoading(true);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          form.setValue("gpsCoordinates", `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`);
+          setGeoLoading(false);
+          toast({
+            title: "Location captured",
+            description: `Latitude: ${latitude.toFixed(6)}, Longitude: ${longitude.toFixed(6)}`,
+          });
+        },
+        (error) => {
+          setGeoLoading(false);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Unable to get your location. Please enable GPS permissions.",
+          });
+        }
+      );
+    } else {
+      setGeoLoading(false);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Geolocation is not supported by this browser.",
+      });
+    }
+  };
 
   const onSubmit = (data: FormValues) => {
     const timeBegin = new Date().toLocaleTimeString('en-US', { 
@@ -56,6 +92,7 @@ export function SidebarForm() {
           routing: "",
           date: new Date().toISOString().split('T')[0],
           status: false,
+          gpsCoordinates: "",
           effect: "",
           problemDetails: "",
         });
@@ -168,6 +205,31 @@ export function SidebarForm() {
             {form.formState.errors.routing && (
               <p className="text-xs text-destructive">{form.formState.errors.routing.message}</p>
             )}
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">GPS Coordinates</label>
+            <div className="flex gap-2">
+              <input
+                {...form.register("gpsCoordinates")}
+                className="flex-1 px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                placeholder="Latitude, Longitude"
+              />
+              <button
+                type="button"
+                onClick={handleGetLocation}
+                disabled={geoLoading}
+                className="px-3 py-2 rounded-md bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 text-sm font-medium transition-all flex items-center gap-1 whitespace-nowrap disabled:opacity-50"
+                data-testid="button-get-location"
+              >
+                {geoLoading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <MapPin className="w-4 h-4" />
+                )}
+                Get
+              </button>
+            </div>
           </div>
 
           <div className="space-y-2">

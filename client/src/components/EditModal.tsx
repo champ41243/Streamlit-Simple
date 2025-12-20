@@ -2,7 +2,7 @@ import { Report } from "@shared/schema";
 import { useUpdateReport } from "@/hooks/use-data";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
-import { X, Loader2 } from "lucide-react";
+import { X, Loader2, MapPin } from "lucide-react";
 
 interface EditModalProps {
   report: Report;
@@ -23,11 +23,45 @@ export function EditModal({ report, isOpen, onClose }: EditModalProps) {
     bjOrSite: report.bjOrSite,
     routing: report.routing,
     date: report.date,
+    gpsCoordinates: report.gpsCoordinates || "",
     status: report.status,
     effect: report.effect,
     problemDetails: report.problemDetails || "",
     timeFinished: report.timeFinished || "",
   });
+  const [geoLoading, setGeoLoading] = useState(false);
+
+  const handleGetLocation = () => {
+    setGeoLoading(true);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setFormData({ ...formData, gpsCoordinates: `${latitude.toFixed(6)}, ${longitude.toFixed(6)}` });
+          setGeoLoading(false);
+          toast({
+            title: "Location captured",
+            description: `Latitude: ${latitude.toFixed(6)}, Longitude: ${longitude.toFixed(6)}`,
+          });
+        },
+        (error) => {
+          setGeoLoading(false);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Unable to get your location. Please enable GPS permissions.",
+          });
+        }
+      );
+    } else {
+      setGeoLoading(false);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Geolocation is not supported by this browser.",
+      });
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -145,6 +179,33 @@ export function EditModal({ report, isOpen, onClose }: EditModalProps) {
                 onChange={(e) => setFormData({ ...formData, routing: e.target.value })}
                 className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
               />
+            </div>
+
+            <div className="col-span-2 space-y-2">
+              <label className="text-sm font-medium text-foreground">GPS Coordinates</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={formData.gpsCoordinates}
+                  onChange={(e) => setFormData({ ...formData, gpsCoordinates: e.target.value })}
+                  className="flex-1 px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  placeholder="Latitude, Longitude"
+                />
+                <button
+                  type="button"
+                  onClick={handleGetLocation}
+                  disabled={geoLoading}
+                  className="px-3 py-2 rounded-md bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 text-sm font-medium transition-all flex items-center gap-1 whitespace-nowrap disabled:opacity-50"
+                  data-testid="button-get-location-edit"
+                >
+                  {geoLoading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <MapPin className="w-4 h-4" />
+                  )}
+                  Get
+                </button>
+              </div>
             </div>
 
             <div className="space-y-2">

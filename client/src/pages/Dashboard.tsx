@@ -1,12 +1,13 @@
 import { useReports, useDeleteReport, useCompleteReport } from "@/hooks/use-data";
 import { SidebarForm } from "@/components/SidebarForm";
 import { KPICard } from "@/components/KPICard";
-import { Loader2, Trash2, ArrowRight, CheckCircle, Pencil } from "lucide-react";
+import { Loader2, Trash2, ArrowRight, CheckCircle, Pencil, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { getZoneColor } from "@/lib/zoneColors";
 import { EditModal } from "@/components/EditModal";
 import type { Report } from "@shared/schema";
+import * as XLSX from "xlsx";
 
 export default function Dashboard() {
   const { data: reports, isLoading, isError } = useReports();
@@ -63,6 +64,39 @@ export default function Dashboard() {
       },
       onError: () => setCompleteId(null)
     });
+  };
+
+  const handleExportExcel = () => {
+    if (!reports || reports.length === 0) {
+      toast({ title: "No data", description: "There are no reports to export." });
+      return;
+    }
+
+    const data = reports.map((report) => ({
+      Zone: report.zone,
+      "Chain No": report.chainNo,
+      Team: report.splicingTeam,
+      Name: report.name,
+      "Job ID": report.jobId,
+      "BJ. Or Site": report.bjOrSite,
+      Routing: report.routing,
+      Date: report.date,
+      GPS: report.gpsCoordinates || "",
+      "Time Begin": report.timeBegin || "",
+      "Time Finished": report.timeFinished || "",
+      Status: report.status ? "Complete" : "Not Complete",
+      Effect: report.effect || "",
+      "Problem Details": report.problemDetails || "",
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Reports");
+    
+    const timestamp = new Date().toISOString().split("T")[0];
+    XLSX.writeFile(workbook, `splicing-reports-${timestamp}.xlsx`);
+    
+    toast({ title: "Export complete", description: "Reports exported to Excel successfully." });
   };
 
   return (
@@ -122,12 +156,22 @@ export default function Dashboard() {
                 <h3 className="text-lg font-bold text-foreground">Report Entries</h3>
                 <p className="text-sm text-muted-foreground">Complete list of all splicing work records</p>
               </div>
-              <button 
-                className="text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 transition-colors"
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              >
-                Back to top <ArrowRight className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-3">
+                <button 
+                  onClick={handleExportExcel}
+                  className="flex items-center gap-2 px-4 py-2 rounded-md bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-sm font-medium transition-all border border-emerald-200"
+                  data-testid="button-export-excel"
+                >
+                  <Download className="w-4 h-4" />
+                  Export to Excel
+                </button>
+                <button 
+                  className="text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 transition-colors"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                  Back to top <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
             
             <div className="overflow-x-auto">
@@ -142,6 +186,7 @@ export default function Dashboard() {
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">BJ. Or Site</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Routing</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Date</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">GPS</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Begin</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">End</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Status</th>
@@ -169,6 +214,7 @@ export default function Dashboard() {
                       <td className="px-4 py-3 text-sm">{row.bjOrSite}</td>
                       <td className="px-4 py-3 text-sm">{row.routing}</td>
                       <td className="px-4 py-3 text-sm">{row.date}</td>
+                      <td className="px-4 py-3 text-sm text-muted-foreground max-w-xs truncate font-mono text-xs">{row.gpsCoordinates || '-'}</td>
                       <td className="px-4 py-3 font-mono text-sm">{row.timeBegin}</td>
                       <td className="px-4 py-3 font-mono text-sm">{row.status ? row.timeFinished : ''}</td>
                       <td className="px-4 py-3">
