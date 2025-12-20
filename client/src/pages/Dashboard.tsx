@@ -4,6 +4,7 @@ import { KPICard } from "@/components/KPICard";
 import { Loader2, Trash2, ArrowRight, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import { getZoneColor } from "@/lib/zoneColors";
 
 export default function Dashboard() {
   const { data: reports, isLoading, isError } = useReports();
@@ -146,9 +147,17 @@ export default function Dashboard() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/30 bg-white">
-                  {reports.map((row) => (
+                  {reports.map((row) => {
+                    const zoneColor = getZoneColor(row.zone);
+                    return (
                     <tr key={row.id} className="hover:bg-slate-50 transition-colors">
-                      <td className="px-4 py-3 font-medium text-foreground">{row.zone}</td>
+                      <td className="px-4 py-3">
+                        <span 
+                          className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium font-semibold ${zoneColor.bg} ${zoneColor.text}`}
+                        >
+                          {row.zone}
+                        </span>
+                      </td>
                       <td className="px-4 py-3 font-mono text-sm">{row.chainNo}</td>
                       <td className="px-4 py-3 text-sm">{row.splicingTeam}</td>
                       <td className="px-4 py-3 font-medium">{row.name}</td>
@@ -207,7 +216,8 @@ export default function Dashboard() {
                         )}
                       </td>
                     </tr>
-                  ))}
+                  );
+                  })}
                   {reports.length === 0 && (
                     <tr>
                       <td colSpan={13} className="px-6 py-12 text-center text-muted-foreground">
