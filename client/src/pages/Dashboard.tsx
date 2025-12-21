@@ -203,19 +203,15 @@ export default function Dashboard() {
             </div>
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className={`p-2.5 rounded-lg border shadow-sm transition-all duration-300
-                ${isDarkMode 
-                  ? 'bg-slate-800 border-slate-700 text-yellow-400 hover:bg-slate-700 hover:text-yellow-300' 
-                  : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-700'
-                }`}
+              className={`p-2.5 rounded-lg border shadow-sm transition-all duration-300 ${isDarkMode ? 'bg-slate-800 border-slate-700 text-yellow-400' : 'bg-white border-slate-200 text-slate-500'}`}
             >
               {isDarkMode ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
             </button>
 
           </div>
-
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            </div>
+            
             <KPICard
               title="Total Reports"
               value={totalReports}
