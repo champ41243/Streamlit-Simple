@@ -3,13 +3,13 @@ import fs from "fs";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 
-// สร้างตัวแปร __dirname ขึ้นมาใช้เอง (สำหรับระบบ ES Modules)
+// สร้างตัวแปร __dirname ขึ้นมาใช้เอง
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export function serveStatic(app: Express) {
-  // ชี้ไปที่โฟลเดอร์ dist (ที่ได้จากการ Build หน้าเว็บ)
-  const distPath = path.resolve(__dirname, "..", "dist");
+  // แก้ตรงนี้ครับ! เพิ่ม "public" เข้าไปเพื่อให้ตรงกับที่ Vite สร้างไว้
+  const distPath = path.resolve(__dirname, "..", "dist", "public");
 
   if (!fs.existsSync(distPath)) {
     throw new Error(
@@ -19,7 +19,7 @@ export function serveStatic(app: Express) {
 
   app.use(express.static(distPath));
 
-  // ถ้าหาไฟล์ไม่เจอ ให้ส่งกลับไปที่หน้า index.html (สำหรับ Single Page App)
+  // ถ้าหาไฟล์ไม่เจอ ให้ส่งกลับไปที่หน้า index.html
   app.use("*", (_req, res) => {
     res.sendFile(path.resolve(distPath, "index.html"));
   });
