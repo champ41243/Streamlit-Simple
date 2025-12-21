@@ -232,8 +232,15 @@ export default function Dashboard() {
             />
           </div>
 
-          <div className="bg-white p-6 rounded-xl border border-border/60 shadow-sm">
-            <h3 className="text-lg font-bold text-foreground mb-6">Daily Work Summary</h3>
+          {/* 👇 เปลี่ยนสีพื้นหลังกล่อง และสีขอบ ตามโหมด */}
+      <div className={`p-6 rounded-xl border shadow-sm transition-all duration-300
+        ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-border/60'}`}>
+        
+        {/* 👇 เปลี่ยนสีตัวหนังสือหัวข้อ */}
+        <h3 className={`text-lg font-bold mb-6 transition-colors duration-300 
+          ${isDarkMode ? 'text-slate-100' : 'text-slate-900'}`}>
+          Daily Work Summary
+        </h3>
             <div className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={dailyStats}>
@@ -274,11 +281,20 @@ export default function Dashboard() {
             <SidebarForm />
           </div>
 
-          <div className="bg-white rounded-xl border border-border/60 shadow-sm overflow-hidden">
-            <div className="p-6 border-b border-border/40 flex justify-between items-center bg-slate-50/30">
-              <div>
-                <h3 className="text-lg font-bold text-foreground">Report Entries</h3>
-                <p className="text-sm text-muted-foreground">Complete list of all splicing work records</p>
+          {/* 👇 เปลี่ยนสีพื้นหลังตาราง (Report Entries) */}
+        <div className={`rounded-xl border shadow-sm overflow-hidden transition-all duration-300
+          ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-border/60'}`}>
+          
+          {/* 👇 ส่วนหัวของตาราง */}
+          <div className={`p-6 border-b flex justify-between items-center transition-colors
+            ${isDarkMode ? 'bg-slate-900/50 border-slate-800' : 'bg-slate-50/30 border-border/40'}`}>
+            <div>
+              <h3 className={`text-lg font-bold transition-colors ${isDarkMode ? 'text-slate-100' : 'text-slate-900'}`}>
+                Report Entries
+              </h3>
+              <p className={`text-sm transition-colors ${isDarkMode ? 'text-slate-400' : 'text-muted-foreground'}`}>
+                Complete list of all splicing work records
+              </p>
               </div>
               <div className="flex items-center gap-3">
                 <button
@@ -295,7 +311,11 @@ export default function Dashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead className="">
-                  <tr className="border-b border-border/50 bg-slate-50/50 text-muted-foreground">
+                  <tr className={`border-b transition-colors text-sm uppercase tracking-wider font-medium
+            ${isDarkMode 
+              ? 'border-slate-800 bg-slate-900/80 text-slate-400' 
+              : 'border-border/50 bg-slate-50/50 text-muted-foreground'
+            }`}>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Zone</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Chain No</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Team</th>
