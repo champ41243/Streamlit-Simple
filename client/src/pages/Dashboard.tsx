@@ -165,7 +165,7 @@ export default function Dashboard() {
                 </button>
 
                 {showCalendar && (
-                  <div className="absolute right-0 top-12 z-50 bg-white p-4 rounded-xl shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 duration-200">
+                  <div className="absolute left-0 md:right-0 top-12 z-50 bg-white p-4 rounded-xl shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 duration-200">
                     <div className="flex justify-between items-center mb-2">
                        <h3 className="font-semibold text-slate-700">Jobs per Day</h3>
                        <button onClick={() => setShowCalendar(false)} className="text-slate-400 hover:text-red-500">
