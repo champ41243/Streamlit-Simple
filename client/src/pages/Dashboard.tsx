@@ -9,7 +9,6 @@ import { EditModal } from "@/components/EditModal";
 import type { Report } from "@shared/schema";
 import * as XLSX from "xlsx";
 
-// เพิ่ม Library สำหรับกราฟและปฏิทิน
 import {
   BarChart,
   Bar,
@@ -21,7 +20,7 @@ import {
   Cell
 } from "recharts";
 import { DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css"; // สไตล์ของปฏิทิน
+import "react-day-picker/dist/style.css";
 
 export default function Dashboard() {
   const { data: reports, isLoading, isError } = useReports();
@@ -31,16 +30,12 @@ export default function Dashboard() {
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [completeId, setCompleteId] = useState<number | null>(null);
   const [editingReport, setEditingReport] = useState<Report | null>(null);
-  
-  // State สำหรับเปิด/ปิดปฏิทิน
   const [showCalendar, setShowCalendar] = useState(false);
 
-  // คำนวณข้อมูลสำหรับกราฟและปฏิทิน (Group by Date)
   const dailyStats = useMemo(() => {
     if (!reports) return [];
     const stats: Record<string, number> = {};
     reports.forEach((r) => {
-      // ตัดเอาเฉพาะวันที่ (เผื่อ format มามีเวลาติด)
       const dateKey = r.date.split("T")[0]; 
       stats[dateKey] = (stats[dateKey] || 0) + 1;
     });
@@ -50,7 +45,6 @@ export default function Dashboard() {
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }, [reports]);
 
-  // สร้างฟังก์ชันสำหรับแสดงจุดสีในปฏิทิน
   const modifiers = {
     hasJob: (date: Date) => {
       const dateString = date.toISOString().split('T')[0];
@@ -60,7 +54,7 @@ export default function Dashboard() {
   const modifiersStyles = {
     hasJob: { 
       fontWeight: 'bold',
-      color: '#10b981', // สีเขียว Emerald
+      color: '#10b981',
       textDecoration: 'underline'
     }
   };
@@ -140,7 +134,6 @@ export default function Dashboard() {
     );
   }
 
-  // Calculate stats
   const totalReports = reports.length;
   const completeCount = reports.filter(r => r.status === true).length;
   const incompleteCount = reports.filter(r => r.status === false).length;
@@ -148,16 +141,13 @@ export default function Dashboard() {
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-slate-50/50">
-      {/* Sidebar Area */}
       <aside className="hidden md:block w-80 h-full shadow-xl shadow-slate-200 z-20">
         <SidebarForm />
       </aside>
 
-      {/* Main Content Area */}
       <main className="flex-1 h-full overflow-y-auto p-4 md:p-8 lg:p-10 scroll-smooth">
         <div className="max-w-7xl mx-auto space-y-8">
           
-          {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative">
             <div>
               <h1 className="text-4xl font-bold text-foreground tracking-tight font-display">Splicing Reports</h1>
@@ -165,7 +155,6 @@ export default function Dashboard() {
             </div>
             
             <div className="flex items-center gap-3">
-              {/* ปุ่มดูปฏิทิน */}
               <div className="relative">
                 <button 
                   onClick={() => setShowCalendar(!showCalendar)}
@@ -175,7 +164,6 @@ export default function Dashboard() {
                   <span>Calendar View</span>
                 </button>
 
-                {/* Popover ปฏิทิน */}
                 {showCalendar && (
                   <div className="absolute right-0 top-12 z-50 bg-white p-4 rounded-xl shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 duration-200">
                     <div className="flex justify-between items-center mb-2">
@@ -197,7 +185,6 @@ export default function Dashboard() {
                 )}
               </div>
 
-              {/* ป้าย Live Data */}
               <div className="flex items-center gap-2 text-sm text-muted-foreground bg-white px-3 py-1.5 rounded-full border shadow-sm">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 Live Data
@@ -205,7 +192,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* KPI Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <KPICard
               title="Total Reports"
@@ -227,7 +213,6 @@ export default function Dashboard() {
             />
           </div>
 
-          {/* 📊 NEW: Daily Jobs Chart Section */}
           <div className="bg-white p-6 rounded-xl border border-border/60 shadow-sm">
             <h3 className="text-lg font-bold text-foreground mb-6">Daily Work Summary</h3>
             <div className="h-[300px] w-full">
@@ -266,12 +251,10 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Mobile Form - shown only on mobile */}
           <div className="md:hidden bg-white rounded-xl border border-border/60 shadow-sm overflow-hidden">
             <SidebarForm />
           </div>
 
-          {/* Reports Table */}
           <div className="bg-white rounded-xl border border-border/60 shadow-sm overflow-hidden">
             <div className="p-6 border-b border-border/40 flex justify-between items-center bg-slate-50/30">
               <div>
@@ -392,4 +375,34 @@ export default function Dashboard() {
                   })}
                   {reports.length === 0 && (
                     <tr>
-                      <td colSpan
+                      <td colSpan={15} className="px-6 py-12 text-center text-muted-foreground">
+                        No reports yet. Add a new entry using the form above.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            
+            <div className="p-4 border-t border-border/40 bg-slate-50/50 flex justify-center">
+              <button 
+                className="text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 transition-colors"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              >
+                Back to top <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {editingReport && (
+            <EditModal
+              report={editingReport}
+              isOpen={Boolean(editingReport)}
+              onClose={() => setEditingReport(null)}
+            />
+          )}
+        </div>
+      </main>
+    </div>
+  );
+}
