@@ -1,7 +1,7 @@
 import { useReports, useDeleteReport, useCompleteReport } from "@/hooks/use-data";
 import { SidebarForm } from "@/components/SidebarForm";
 import { KPICard } from "@/components/KPICard";
-import { Loader2, Trash2, ArrowRight, CheckCircle, Pencil, Download, Calendar as CalendarIcon, X } from "lucide-react";
+import { Loader2, Trash2, ArrowRight, CheckCircle, Pencil, Download, Calendar as CalendarIcon, X, Sun, Moon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useMemo } from "react";
 import { getZoneColor } from "@/lib/zoneColors";
@@ -31,6 +31,7 @@ export default function Dashboard() {
   const [completeId, setCompleteId] = useState<number | null>(null);
   const [editingReport, setEditingReport] = useState<Report | null>(null);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const dailyStats = useMemo(() => {
     if (!reports) return [];
@@ -140,7 +141,8 @@ export default function Dashboard() {
   const completionRate = totalReports > 0 ? Math.round((completeCount / totalReports) * 100) : 0;
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-slate-50/50">
+    <div className={`flex h-screen w-full overflow-hidden transition-colors duration-500 
+  ${isDarkMode ? 'bg-slate-950' : 'bg-slate-50/50'}`}>
       <aside className="hidden md:block w-80 h-full shadow-xl shadow-slate-200 z-20">
         <SidebarForm />
       </aside>
@@ -148,11 +150,16 @@ export default function Dashboard() {
       <main className="flex-1 h-full overflow-y-auto p-4 md:p-8 lg:p-10 scroll-smooth">
         <div className="max-w-7xl mx-auto space-y-8">
           
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative">
-            <div>
-              <h1 className="text-4xl font-bold text-foreground tracking-tight font-display">OMC Daily Report</h1>
-              <p className="text-muted-foreground mt-2 text-lg">Track splicing team work and job status.</p>
-            </div>
+          <div className="flex flex-col">
+                <h1 className={`text-4xl font-bold tracking-tight font-display transition-colors duration-500 
+                  ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                  OMC Daily Report
+                </h1>
+                <p className={`mt-2 text-lg transition-colors duration-500 
+                  ${isDarkMode ? 'text-slate-400' : 'text-muted-foreground'}`}>
+                  Track splicing team work and job status.
+                </p>
+              </div>
             
            <div className="flex items-center gap-3">
             
@@ -194,6 +201,16 @@ export default function Dashboard() {
                 </div>
               )}
             </div>
+            <button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className={`p-2.5 rounded-lg border shadow-sm transition-all duration-300
+                ${isDarkMode 
+                  ? 'bg-slate-800 border-slate-700 text-yellow-400 hover:bg-slate-700 hover:text-yellow-300' 
+                  : 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-700'
+                }`}
+            >
+              {isDarkMode ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+            </button>
 
           </div>
 
