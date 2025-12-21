@@ -150,7 +150,7 @@ export default function Dashboard() {
           
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative">
             <div>
-              <h1 className="text-4xl font-bold text-foreground tracking-tight font-display">Splicing Reports</h1>
+              <h1 className="text-4xl font-bold text-foreground tracking-tight font-display">OMC Daily Report</h1>
               <p className="text-muted-foreground mt-2 text-lg">Track splicing team work and job status.</p>
             </div>
             
