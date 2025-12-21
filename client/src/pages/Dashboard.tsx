@@ -173,9 +173,7 @@ export default function Dashboard() {
               </button>
 
               {showCalendar && (
-                <div className="absolute right-0 top-12 z-50 bg-white p-4 rounded-xl shadow-2xl border border-slate-200 animate-in fade-in slide-in-from-top-2 w-[280px]
-                              md:right-0 md:left-auto
-                              right-[-50px] sm:right-0"> 
+                <div className="absolute right-0 top-12 z-50 bg-white p-4 rounded-xl shadow-2xl border border-slate-200 animate-in fade-in slide-in-from-top-2 w-auto min-w-[320px]"> 
                   {/* 👆 สูตรแก้: มือถือขยับซ้ายนิดนึง (-50px) กันตกขอบ, คอมฯชิดขวาปกติ */}
                   
                   <div className="flex justify-between items-center mb-2">
