@@ -333,11 +333,11 @@ export default function Dashboard() {
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border/30 bg-white">
+                <tbody className={`divide-y transition-colors ${isDarkMode ? 'divide-zinc-800' : 'divide-border/30 bg-white'}`}>
                   {reports.map((row) => {
                     const zoneColor = getZoneColor(row.zone);
                     return (
-                      <tr key={row.id} className="hover:bg-slate-50 transition-colors">
+                      <tr key={row.id} className={`transition-colors border-b ${isDarkMode ? 'border-zinc-800 hover:bg-zinc-800/50 text-zinc-300' : 'border-border/50 hover:bg-slate-50 text-slate-700'}`}>
                         <td className="px-4 py-3">
                           <span
                             className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium font-semibold ${zoneColor.bg} ${zoneColor.text}`}
