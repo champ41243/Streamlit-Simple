@@ -154,42 +154,49 @@ export default function Dashboard() {
               <p className="text-muted-foreground mt-2 text-lg">Track splicing team work and job status.</p>
             </div>
             
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <button 
-                  onClick={() => setShowCalendar(!showCalendar)}
-                  className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg border shadow-sm hover:bg-slate-50 transition-colors text-slate-700 font-medium"
-                >
-                  <CalendarIcon className="w-4 h-4" />
-                  <span>Calendar View</span>
-                </button>
-
-                {showCalendar && (
-                  <div className="absolute left-0 md:right-0 top-12 z-50 bg-white p-4 rounded-xl shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 duration-200">
-                    <div className="flex justify-between items-center mb-2">
-                       <h3 className="font-semibold text-slate-700">Jobs per Day</h3>
-                       <button onClick={() => setShowCalendar(false)} className="text-slate-400 hover:text-red-500">
-                         <X className="w-4 h-4"/>
-                       </button>
-                    </div>
-                    <DayPicker 
-                      modifiers={modifiers}
-                      modifiersStyles={modifiersStyles}
-                      footer={
-                         <div className="mt-2 text-xs text-center text-slate-500">
-                           *Green dates have reports
-                         </div>
-                      }
-                    />
-                  </div>
-                )}
-              </div>
-
-              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-white px-3 py-1.5 rounded-full border shadow-sm">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                Live Data
-              </div>
+           <div className="flex items-center gap-3">
+            
+            {/* 1. Live Data (ย้ายมาไว้ข้างหน้า) */}
+            <div className="flex items-center gap-2 text-sm text-muted-foreground bg-white px-3 py-1.5 rounded-full border shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Live Data
             </div>
+
+            {/* 2. Calendar (ย้ายมาไว้ข้างหลัง) */}
+            <div className="relative">
+              <button
+                onClick={() => setShowCalendar(!showCalendar)}
+                className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg border shadow-sm hover:bg-slate-50 transition-colors text-sm font-medium"
+              >
+                <CalendarIcon className="w-4 h-4" />
+                <span>Calendar View</span>
+              </button>
+
+              {showCalendar && (
+                <div className="absolute right-0 top-12 z-50 bg-white p-4 rounded-xl shadow-2xl border border-slate-200 animate-in fade-in slide-in-from-top-2 w-[280px]
+                              md:right-0 md:left-auto
+                              right-[-50px] sm:right-0"> 
+                  {/* 👆 สูตรแก้: มือถือขยับซ้ายนิดนึง (-50px) กันตกขอบ, คอมฯชิดขวาปกติ */}
+                  
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="font-semibold text-slate-700">Jobs per Day</h3>
+                    <button onClick={() => setShowCalendar(false)} className="text-slate-400 hover:text-red-500">
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <DayPicker
+                    modifiers={modifiers}
+                    modifiersStyles={modifiersStyles}
+                    footer={
+                      <div className="mt-2 text-xs text-center text-slate-500">
+                        *Green dates have reports
+                      </div>
+                    }
+                  />
+                </div>
+              )}
+            </div>
+
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
