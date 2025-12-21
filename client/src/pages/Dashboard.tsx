@@ -392,6 +392,11 @@ export default function Dashboard() {
                 Back to top <ArrowRight className="w-4 h-4" />
               </button>
             </div>
+            <div className="py-8 text-center">
+            <p className="text-xs text-slate-400 font-medium">
+              Developed by <span className="text-slate-600 font-bold">Champ คนดีคนนี้นี่เองเป็นคนทำ</span> © 2025
+            </p>
+          </div>
           </div>
 
           {editingReport && (
