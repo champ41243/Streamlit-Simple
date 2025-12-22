@@ -112,7 +112,7 @@ const preventEnter = (e: React.KeyboardEvent) => {
   };
 
   return (
-    <div className="w-full flex flex-col bg-slate-50 border-r border-border/60 md:h-full">
+    <div className="w-full flex flex-col bg-background border-r border-border/60 md:h-full">
       <div className="p-6 border-b border-border/40">
         <div className="flex items-center gap-2 text-primary font-bold text-xl font-display">
           <FileText className="w-6 h-6" />

@@ -494,7 +494,7 @@ export default function Dashboard() {
               </table>
             </div>
             
-            <div className="p-4 border-t border-border/40 bg-slate-50/50 flex justify-center">
+            <div className="p-4 border-t border-border/40 bg-background flex justify-center">
               <button 
                 className="text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 transition-colors"
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
