@@ -52,7 +52,11 @@ export default function Dashboard() {
     if (!reports) return [];
     return reports.filter(r => r.date === format(date, 'yyyy-MM-dd'));
   }, [reports, date]);
-
+// 👇 วางตรงนี้เลยครับ (บรรทัด 55)
+  const totalReports = filteredReports.length;
+  const completeCount = filteredReports.filter(r => r.status === true).length;
+  const incompleteCount = filteredReports.filter(r => r.status === false).length;
+  const completionRate = totalReports > 0 ? Math.round((completeCount / totalReports) * 100) : 0;
   const modifiers = {
     hasJob: (date: Date) => {
       const dateString = date.toISOString().split('T')[0];
@@ -142,10 +146,7 @@ export default function Dashboard() {
     );
   }
 
-  const totalReports = reports.length;
-  const completeCount = reports.filter(r => r.status === true).length;
-  const incompleteCount = reports.filter(r => r.status === false).length;
-  const completionRate = totalReports > 0 ? Math.round((completeCount / totalReports) * 100) : 0;
+  
 
   return (
     <div className={`flex h-screen w-full overflow-hidden transition-colors duration-500 
