@@ -197,56 +197,73 @@ export default function Dashboard() {
                       <X className="w-4 h-4" />
                     </button>
                   </div>
+                  {/* 👇 เพิ่ม div ครอบ เพื่อให้ตัวเลขลอยออกนอกกรอบได้ไม่แหว่ง */}
+                <div className="flex justify-center overflow-visible p-2">
                   <DayPicker
-                  mode="single"
-                  selected={date}
-                  onSelect={(d) => {
-                    if (d) setDate(d);
-                    // setShowCalendar(false);
-                  }}
-                  className="border-0"
-                  classNames={{
-                    day_selected: "bg-blue-600 text-white hover:bg-blue-600 hover:text-white focus:bg-blue-600 focus:text-white rounded-full",
-                    day_today: "bg-slate-100 text-slate-900 font-bold rounded-full",
-                  }}
-                  components={{
-                    DayContent: ({ date: dayDate }) => {
-                      const formattedDate = format(dayDate, 'yyyy-MM-dd');
-                      
-                      // 👇 แก้ตรงนี้: ตัดเวลาทิ้ง (split 'T') เพื่อให้เจองานแน่นอน
-                      const count = (reports || []).filter(r => 
-                        (r.date && r.date.split('T')[0] === formattedDate)
-                      ).length;
+                    mode="single"
+                    selected={date}
+                    onSelect={(d) => {
+                      if (d) setDate(d);
+                      // setShowCalendar(false);
+                    }}
+                    className="border-0 p-0"
+                    classNames={{
+                      months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+                      month: "space-y-4",
+                      caption: "flex justify-center pt-1 relative items-center",
+                      caption_label: "text-sm font-medium",
+                      nav: "space-x-1 flex items-center",
+                      nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 transition-opacity",
+                      nav_button_previous: "absolute left-1",
+                      nav_button_next: "absolute right-1",
+                      table: "w-full border-collapse space-y-1",
+                      head_row: "flex",
+                      head_cell: "text-slate-500 rounded-md w-9 font-normal text-[0.8rem]",
+                      row: "flex w-full mt-2",
+                      cell: "text-center text-sm p-0 relative [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                      day: "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-slate-100 rounded-full transition-colors",
+                      day_selected: "bg-blue-600 text-white hover:bg-blue-600 hover:text-white focus:bg-blue-600 focus:text-white",
+                      day_today: "bg-slate-100 text-slate-900",
+                      day_outside: "text-slate-500 opacity-50",
+                      day_disabled: "text-slate-500 opacity-50",
+                      day_range_middle: "aria-selected:bg-accent aria-selected:text-accent-foreground",
+                      day_hidden: "invisible",
+                    }}
+                    components={{
+                      DayContent: ({ date: dayDate }) => {
+                        const formattedDate = format(dayDate, 'yyyy-MM-dd');
+                        // ดึงจำนวนงาน (ตัดเวลาทิ้ง)
+                        const count = (reports || []).filter(r => 
+                          (r.date && r.date.toString().split('T')[0] === formattedDate)
+                        ).length;
 
-                      // เช็คสถานะการเลือกวัน (เพื่อเปลี่ยนสีตัวเลข)
-                      const isSelected = format(date, 'yyyy-MM-dd') === formattedDate;
+                        const isSelected = format(date, 'yyyy-MM-dd') === formattedDate;
 
-                      return (
-                        <div className="relative flex items-center justify-center w-9 h-9">
-                          <span className={`z-10 text-sm ${isSelected ? 'font-bold' : ''}`}>
-                            {dayDate.getDate()}
-                          </span>
-                          
-                          {/* 👇 Badge ตัวเลข (จะแสดงเมื่อ count > 0) */}
-                          {count > 0 && (
-                            <span className={`absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full text-[10px] shadow-sm ring-1 ring-white
-                              ${isSelected 
-                                ? 'bg-white text-blue-600'  // ถ้าเลือก: พื้นขาว ตัวหนังสือฟ้า
-                                : 'bg-blue-600 text-white'  // ถ้าไม่เลือก: พื้นฟ้า ตัวหนังสือขาว
-                              }`}>
-                              {count}
-                            </span>
-                          )}
-                        </div>
-                      );
+                        return (
+                          <div className="relative flex items-center justify-center w-full h-full">
+                            <span>{dayDate.getDate()}</span>
+                            
+                            {/* Badge ตัวเลขลอยเด่น (อยู่บนสุด z-50) */}
+                            {count > 0 && (
+                              <span className={`absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-bold shadow-sm ring-2 ring-white z-50
+                                ${isSelected 
+                                  ? 'bg-white text-blue-600' 
+                                  : 'bg-blue-600 text-white'
+                                }`}>
+                                {count}
+                              </span>
+                            )}
+                          </div>
+                        );
+                      }
+                    }}
+                    footer={
+                      <div className="mt-4 text-xs text-center text-slate-500">
+                        *Selected date shows detailed reports below
+                      </div>
                     }
-                  }}
-                  footer={
-                    <div className="mt-4 text-xs text-center text-slate-500">
-                      *Selected date shows detailed reports below
-                    </div>
-                  }
-                />
+                  />
+                </div>
                 </div>
               )}
             </div>
