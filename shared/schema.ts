@@ -39,6 +39,7 @@ export const updateReportSchema = z.object({
   routing: z.string().optional(),
   date: z.string().optional(),
   gpsCoordinates: z.string().optional(),
+  timeBegin: z.string().optional(),
   timeFinished: z.string().optional(),
   status: z.boolean().optional(),
   effect: z.string().optional(),
