@@ -109,7 +109,7 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className="p-6 space-y-4">
+        <form className="p-6 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">Zone</label>
@@ -293,7 +293,8 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
               Cancel
             </button>
             <button
-              type="submit"
+              type="button"
+              onClick={handleSubmit}
               disabled={isPending}
               className="px-4 py-2 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-sm transition-all flex items-center gap-2"
             >
