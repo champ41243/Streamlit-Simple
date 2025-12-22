@@ -19,7 +19,11 @@ export function SidebarForm() {
   const { mutate: createReport, isPending } = useCreateReport();
   const { toast } = useToast();
   const [geoLoading, setGeoLoading] = useState(false);
-
+const preventEnter = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && (e.target as HTMLElement).tagName !== "TEXTAREA") {
+      e.preventDefault();
+    }
+  };
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -120,7 +124,7 @@ export function SidebarForm() {
       </div>
 
       <div className="p-6 md:flex-1 md:overflow-y-auto">
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} onKeyDown={preventEnter} className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">Zone *</label>
             <select
