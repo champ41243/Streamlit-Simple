@@ -69,7 +69,11 @@ export function EditModal({ report, isOpen, onClose }: EditModalProps) {
   };
 
   if (!isOpen) return null;
-
+const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && (e.target as HTMLElement).tagName !== "TEXTAREA") {
+      e.preventDefault();
+    }
+  };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // @ts-ignore
@@ -105,7 +109,7 @@ export function EditModal({ report, isOpen, onClose }: EditModalProps) {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className="p-6 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">Zone</label>
