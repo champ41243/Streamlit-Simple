@@ -432,8 +432,13 @@ export default function Dashboard() {
                             {row.status ? 'Complete' : 'Not Complete'}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-sm text-muted-foreground max-w-xs truncate">{row.effect}</td>
-                        <td className="px-4 py-3 text-sm text-muted-foreground max-w-xs truncate">{row.problemDetails || '-'}</td>
+                        <td className="px-4 py-3 text-sm text-muted-foreground whitespace-normal break-words min-w-[300px]">
+  {row.effect}
+</td>
+                        {/* แก้บรรทัด 436 ด้วยก็ได้ครับ ถ้าอยากให้เห็นรายละเอียดปัญหาครบๆ */}
+<td className="px-4 py-3 text-sm text-muted-foreground whitespace-normal break-words min-w-[300px]">
+  {row.problemDetails || '-'}
+</td>
                         <td className="px-4 py-3 text-right flex items-center justify-end gap-2">
                           <button
                             onClick={() => setEditingReport(row)}
