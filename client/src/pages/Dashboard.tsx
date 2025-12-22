@@ -212,13 +212,28 @@ export default function Dashboard() {
                   components={{
                     DayContent: ({ date: dayDate }) => {
                       const formattedDate = format(dayDate, 'yyyy-MM-dd');
-                      const count = (reports || []).filter(r => r.date === formattedDate).length;
+                      
+                      // 👇 แก้ตรงนี้: ตัดเวลาทิ้ง (split 'T') เพื่อให้เจองานแน่นอน
+                      const count = (reports || []).filter(r => 
+                        (r.date && r.date.split('T')[0] === formattedDate)
+                      ).length;
+
+                      // เช็คสถานะการเลือกวัน (เพื่อเปลี่ยนสีตัวเลข)
+                      const isSelected = format(date, 'yyyy-MM-dd') === formattedDate;
 
                       return (
                         <div className="relative flex items-center justify-center w-9 h-9">
-                          <span className="z-10 text-sm">{dayDate.getDate()}</span>
+                          <span className={`z-10 text-sm ${isSelected ? 'font-bold' : ''}`}>
+                            {dayDate.getDate()}
+                          </span>
+                          
+                          {/* 👇 Badge ตัวเลข (จะแสดงเมื่อ count > 0) */}
                           {count > 0 && (
-                            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] text-white shadow-sm ring-1 ring-white">
+                            <span className={`absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full text-[10px] shadow-sm ring-1 ring-white
+                              ${isSelected 
+                                ? 'bg-white text-blue-600'  // ถ้าเลือก: พื้นขาว ตัวหนังสือฟ้า
+                                : 'bg-blue-600 text-white'  // ถ้าไม่เลือก: พื้นฟ้า ตัวหนังสือขาว
+                              }`}>
                               {count}
                             </span>
                           )}
