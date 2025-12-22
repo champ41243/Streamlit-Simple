@@ -8,6 +8,7 @@ import { getZoneColor } from "@/lib/zoneColors";
 import { EditModal } from "@/components/EditModal";
 import type { Report } from "@shared/schema";
 import * as XLSX from "xlsx";
+import { format } from "date-fns";
 
 import {
   BarChart,
@@ -32,6 +33,7 @@ export default function Dashboard() {
   const [editingReport, setEditingReport] = useState<Report | null>(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [date, setDate] = useState<Date>(new Date());
 
   const dailyStats = useMemo(() => {
     if (!reports) return [];
@@ -45,6 +47,11 @@ export default function Dashboard() {
       .map(([date, count]) => ({ date, count }))
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }, [reports]);
+  // 👇 เพิ่มตัวกรอง: ให้โชว์เฉพาะงานของวันที่เลือก
+  const filteredReports = useMemo(() => {
+    if (!reports) return [];
+    return reports.filter(r => r.date === format(date, 'yyyy-MM-dd'));
+  }, [reports, date]);
 
   const modifiers = {
     hasJob: (date: Date) => {
@@ -190,14 +197,40 @@ export default function Dashboard() {
                     </button>
                   </div>
                   <DayPicker
-                    modifiers={modifiers}
-                    modifiersStyles={modifiersStyles}
-                    footer={
-                      <div className="mt-2 text-xs text-center text-slate-500">
-                        *Green dates have reports
-                      </div>
+                  mode="single"
+                  selected={date}
+                  onSelect={(d) => {
+                    if (d) setDate(d);
+                    // setShowCalendar(false);
+                  }}
+                  className="border-0"
+                  classNames={{
+                    day_selected: "bg-blue-600 text-white hover:bg-blue-600 hover:text-white focus:bg-blue-600 focus:text-white rounded-full",
+                    day_today: "bg-slate-100 text-slate-900 font-bold rounded-full",
+                  }}
+                  components={{
+                    DayContent: ({ date: dayDate }) => {
+                      const formattedDate = format(dayDate, 'yyyy-MM-dd');
+                      const count = (reports || []).filter(r => r.date === formattedDate).length;
+
+                      return (
+                        <div className="relative flex items-center justify-center w-9 h-9">
+                          <span className="z-10 text-sm">{dayDate.getDate()}</span>
+                          {count > 0 && (
+                            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] text-white shadow-sm ring-1 ring-white">
+                              {count}
+                            </span>
+                          )}
+                        </div>
+                      );
                     }
-                  />
+                  }}
+                  footer={
+                    <div className="mt-4 text-xs text-center text-slate-500">
+                      *Selected date shows detailed reports below
+                    </div>
+                  }
+                />
                 </div>
               )}
             </div>
@@ -334,7 +367,7 @@ export default function Dashboard() {
                   </tr>
                 </thead>
                 <tbody className={`divide-y transition-colors ${isDarkMode ? 'divide-zinc-800' : 'divide-border/30 bg-white'}`}>
-                  {reports.map((row) => {
+                  {filteredReports.map((row) => {
                     const zoneColor = getZoneColor(row.zone);
                     return (
                       <tr key={row.id} className={`transition-colors border-b ${isDarkMode ? 'border-zinc-800 hover:bg-zinc-800/50 text-zinc-300' : 'border-border/50 hover:bg-slate-50 text-slate-700'}`}>
