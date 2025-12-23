@@ -112,3 +112,13 @@
   --input: 217.2 32.6% 17.5%;
   --ring: 212.7 26.8% 83.9%;
 }
+/* ------------------------------------------------ */
+/* แก้ปัญหากรอบสี่เหลี่ยมดำในปฏิทิน (Force Fix) */
+/* ------------------------------------------------ */
+td:has([aria-selected]) {
+  background-color: transparent !important;
+}
+
+td:has([aria-selected]):hover {
+  background-color: transparent !important;
+}

@@ -112,7 +112,7 @@ const preventEnter = (e: React.KeyboardEvent) => {
   };
 
   return (
-    <div className="w-full flex flex-col bg-background border-r border-border/60 md:h-full">
+    <div className="w-full flex flex-col bg-background text-foreground border-r border-border/60 md:h-full">
       <div className="p-6 border-b border-border/40">
         <div className="flex items-center gap-2 text-primary font-bold text-xl font-display">
           <FileText className="w-6 h-6" />
@@ -129,7 +129,7 @@ const preventEnter = (e: React.KeyboardEvent) => {
             <label className="text-sm font-medium text-foreground">Zone *</label>
             <select
               {...form.register("zone")}
-              className="w-full px-3 py-2 rounded-md bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full px-3 py-2 rounded-md bg-background text-foreground border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
             >
               <option value="">Select a zone</option>
               <option value="SCT">SCT</option>
@@ -152,7 +152,7 @@ const preventEnter = (e: React.KeyboardEvent) => {
             <label className="text-sm font-medium text-foreground">Chain No *</label>
             <input
               {...form.register("chainNo")}
-              className="w-full px-3 py-2 rounded-md bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full px-3 py-2 rounded-md bg-background text-foreground border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
               placeholder="e.g. CH001"
             />
             {form.formState.errors.chainNo && (
@@ -164,7 +164,7 @@ const preventEnter = (e: React.KeyboardEvent) => {
             <label className="text-sm font-medium text-foreground">Splicing Team *</label>
             <input
               {...form.register("splicingTeam")}
-              className="w-full px-3 py-2 rounded-md bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full px-3 py-2 rounded-md bg-background text-foreground border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
               placeholder="e.g. Team 1"
             />
           </div>
@@ -173,7 +173,7 @@ const preventEnter = (e: React.KeyboardEvent) => {
             <label className="text-sm font-medium text-foreground">Name *</label>
             <input
               {...form.register("name")}
-              className="w-full px-3 py-2 rounded-md bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full px-3 py-2 rounded-md bg-background text-foreground border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
               placeholder="e.g. John Smith"
             />
           </div>
@@ -182,7 +182,7 @@ const preventEnter = (e: React.KeyboardEvent) => {
             <label className="text-sm font-medium text-foreground">Job ID *</label>
             <input
               {...form.register("jobId")}
-              className="w-full px-3 py-2 rounded-md bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full px-3 py-2 rounded-md bg-background text-foreground border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
               placeholder="e.g. JOB-001"
             />
           </div>
@@ -191,7 +191,7 @@ const preventEnter = (e: React.KeyboardEvent) => {
             <label className="text-sm font-medium text-foreground">BJ. Or Site *</label>
             <input
               {...form.register("bjOrSite")}
-              className="w-full px-3 py-2 rounded-md bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full px-3 py-2 rounded-md bg-background text-foreground border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
               placeholder="e.g. Site A"
             />
             {form.formState.errors.bjOrSite && (
@@ -203,7 +203,7 @@ const preventEnter = (e: React.KeyboardEvent) => {
             <label className="text-sm font-medium text-foreground">Routing *</label>
             <input
               {...form.register("routing")}
-              className="w-full px-3 py-2 rounded-md bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full px-3 py-2 rounded-md bg-background text-foreground border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
               placeholder="e.g. Route 1"
             />
             {form.formState.errors.routing && (
@@ -216,7 +216,7 @@ const preventEnter = (e: React.KeyboardEvent) => {
             <div className="flex gap-2">
               <input
                 {...form.register("gpsCoordinates")}
-                className="flex-1 px-3 py-2 rounded-md bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                className="flex-1 px-3 py-2 rounded-md bg-background text-foreground border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 placeholder="Latitude, Longitude"
               />
               <button
@@ -241,7 +241,7 @@ const preventEnter = (e: React.KeyboardEvent) => {
             <input
               type="date"
               {...form.register("date")}
-              className="w-full px-3 py-2 rounded-md bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full px-3 py-2 rounded-md bg-background text-foreground border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
             />
           </div>
 
@@ -250,7 +250,7 @@ const preventEnter = (e: React.KeyboardEvent) => {
             <label className="text-sm font-medium text-foreground">Problem Details</label>
             <textarea
               {...form.register("problemDetails")}
-              className="w-full px-3 py-2 rounded-md bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
+              className="w-full px-3 py-2 rounded-md bg-background text-foreground border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
               rows={2}
               placeholder="Describe any issues or problems encountered"
             />
@@ -260,7 +260,7 @@ const preventEnter = (e: React.KeyboardEvent) => {
             <label className="text-sm font-medium text-foreground">Effect / Notes</label>
             <textarea
               {...form.register("effect")}
-              className="w-full px-3 py-2 rounded-md bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
+              className="w-full px-3 py-2 rounded-md bg-background text-foreground border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
               rows={3}
               placeholder="e.g. Excellent connection quality"
             />
@@ -281,7 +281,7 @@ const preventEnter = (e: React.KeyboardEvent) => {
         </form>
       </div>
       
-      <div className="p-4 border-t border-border/40 bg-background/50 text-xs text-center text-muted-foreground font-mono hidden md:block">
+      <div className="p-4 border-t border-border/40 bg-background text-foreground/50 text-xs text-center text-muted-foreground font-mono hidden md:block">
         Report Management • v1.0.0
       </div>
     </div>
