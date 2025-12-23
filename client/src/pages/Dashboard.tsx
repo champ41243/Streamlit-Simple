@@ -155,7 +155,7 @@ export default function Dashboard() {
         <SidebarForm />
       </aside>
 
-      <main className="flex-1 h-full overflow-y-auto p-4 md:p-8 lg:p-10 scroll-smooth">
+      <main id="main-content" className="flex-1 h-full overflow-y-auto p-4 md:p-8 lg:p-10 scroll-smooth">
         <div className="max-w-7xl mx-auto space-y-8">
           
           <div className="flex flex-col">
@@ -497,7 +497,7 @@ export default function Dashboard() {
             <div className="p-4 border-t border-border/40 bg-background flex justify-center">
               <button 
                 className="text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 transition-colors"
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                onClick={() => document.getElementById('main-content')?.scrollTo({ top: 0, behavior: 'smooth' })}
               >
                 Back to top <ArrowRight className="w-4 h-4" />
               </button>
