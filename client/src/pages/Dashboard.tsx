@@ -150,7 +150,7 @@ export default function Dashboard() {
 
   return (
     <div className={`flex h-screen w-full overflow-hidden transition-colors duration-500 
-  ${isDarkMode ? 'bg-slate-950' : 'bg-slate-50/50'}`}>
+  ${isDarkMode ? 'dark bg-slate-950' : 'bg-slate-50/50'}`}>
       <aside className="hidden md:block w-80 h-full bg-background border-r border-border z-20">
         <SidebarForm />
       </aside>
