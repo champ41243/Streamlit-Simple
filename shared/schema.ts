@@ -8,6 +8,7 @@ export const reports = pgTable("reports", {
   chainNo: text("chain_no").notNull(),
   splicingTeam: text("splicing_team").notNull(),
   name: text("name").notNull(),
+  phoneNumber: text("phone_number"),
   jobId: text("job_id").notNull(),
   bjOrSite: text("bj_or_site").notNull(),
   routing: text("routing").notNull(),

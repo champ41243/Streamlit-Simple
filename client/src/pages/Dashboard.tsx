@@ -386,6 +386,7 @@ export default function Dashboard() {
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Chain No</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Team</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Name</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Phone</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Job ID</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">BJ. Or Site</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Routing</th>
@@ -413,17 +414,22 @@ export default function Dashboard() {
                         </td>
                         <td className="px-4 py-3 font-mono text-sm">{row.chainNo}</td>
                         <td className="px-4 py-3 text-sm">{row.splicingTeam}</td>
-                        <td className="px-4 py-3 font-medium">{row.name}</td>
-                        <td className="px-4 py-3 font-mono text-sm text-muted-foreground">{row.jobId}</td>
-                        <td className="px-4 py-3 text-sm">{row.bjOrSite}</td>
-                        <td className="px-4 py-3 text-sm">{row.routing}</td>
-                        <td className="px-4 py-3 text-sm">{row.date}</td>
+                        <td className="px-4 py-3 font-medium whitespace-nowrap min-w-[150px]">
+  {row.name}
+</td>
+                        <td className="px-4 py-3 text-sm text-muted-foreground whitespace-nowrap">
+  {row.phoneNumber || "-"}
+</td>
+                        <td className="px-4 py-3 font-mono text-sm text-muted-foreground whitespace-nowrap min-w-[100px]">{row.jobId}</td>
+<td className="px-4 py-3 text-sm whitespace-nowrap min-w-[100px]">{row.bjOrSite}</td>
+<td className="px-4 py-3 text-sm whitespace-nowrap min-w-[100px]">{row.routing}</td>
+<td className="px-4 py-3 text-sm whitespace-nowrap min-w-[100px]">{row.date}</td>
                         <td className="px-4 py-3 text-sm text-muted-foreground max-w-xs truncate font-mono text-xs">{row.gpsCoordinates || '-'}</td>
                         <td className="px-4 py-3 font-mono text-sm">{row.timeBegin}</td>
                         <td className="px-4 py-3 font-mono text-sm">{row.status ? row.timeFinished : ''}</td>
                         <td className="px-4 py-3">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ${
                               row.status
                                 ? 'bg-emerald-100 text-emerald-800'
                                 : 'bg-slate-100 text-slate-600'

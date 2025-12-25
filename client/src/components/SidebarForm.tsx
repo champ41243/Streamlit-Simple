@@ -31,6 +31,7 @@ const preventEnter = (e: React.KeyboardEvent) => {
       chainNo: "",
       splicingTeam: "",
       name: "",
+      phoneNumber: "",
       jobId: "",
       bjOrSite: "",
       routing: "",
@@ -177,6 +178,14 @@ const preventEnter = (e: React.KeyboardEvent) => {
               placeholder="e.g. John Smith"
             />
           </div>
+          <div className="space-y-2">
+  <label className="text-sm font-medium text-foreground">Phone Number</label>
+  <input
+    {...form.register("phoneNumber")}
+    className="w-full px-3 py-2 rounded-md bg-background text-foreground border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+    placeholder="e.g. 081-234-5678"
+  />
+</div>
 
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">Job ID *</label>
