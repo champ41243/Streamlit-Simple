@@ -396,7 +396,7 @@ export default function Dashboard() {
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">End</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Status</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Effect</th>
-                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider">Problems</th>
+                    <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-red-600">Problems</th>
                     <th className="px-4 py-3 font-medium text-xs uppercase tracking-wider text-right">Actions</th>
                   </tr>
                 </thead>
@@ -442,7 +442,7 @@ export default function Dashboard() {
   {row.effect}
 </td>
                         {/* แก้บรรทัด 436 ด้วยก็ได้ครับ ถ้าอยากให้เห็นรายละเอียดปัญหาครบๆ */}
-<td className="px-4 py-3 text-sm text-muted-foreground whitespace-normal break-words min-w-[300px]">
+<td className="px-4 py-3 text-sm text-red-600 whitespace-normal break-words min-w-[300px]">
   {row.problemDetails || '-'}
 </td>
                         <td className="px-4 py-3 text-right flex items-center justify-end gap-2">

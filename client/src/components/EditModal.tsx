@@ -97,14 +97,14 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 flex items-center justify-between p-6 border-b border-border/40 bg-white z-10">
-          <h2 className="text-lg font-bold text-foreground">Edit Report Entry</h2>
+      <div className="bg-white dark:bg-slate-900 dark:text-slate-100 rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 flex items-center justify-between p-6 border-b border-border/40 bg-white dark:bg-slate-900 dark:border-slate-800 z-10">
+          <h2 className="text-lg font-bold text-foreground dark:text-slate-100">Edit Report Entry</h2>
           <button
-            onClick={onClose}
-            className="text-muted-foreground hover:text-foreground transition-colors"
-            data-testid="button-close-edit-modal"
-          >
+  onClick={onClose}
+  className="text-muted-foreground hover:text-foreground dark:text-slate-400 dark:hover:text-slate-100 transition-colors"
+  data-testid="button-close-edit-modal"
+>
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -116,7 +116,7 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
               <select
                 value={formData.zone}
                 onChange={(e) => setFormData({ ...formData, zone: e.target.value })}
-                className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 rounded-md bg-white text-slate-900 border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="SCT">SCT</option>
                 <option value="CWT">CWT</option>
@@ -137,7 +137,7 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
                 type="text"
                 value={formData.chainNo}
                 onChange={(e) => setFormData({ ...formData, chainNo: e.target.value })}
-                className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 rounded-md bg-white text-slate-900 border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
@@ -147,7 +147,7 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
                 type="text"
                 value={formData.splicingTeam}
                 onChange={(e) => setFormData({ ...formData, splicingTeam: e.target.value })}
-                className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 rounded-md bg-white text-slate-900 border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
@@ -157,7 +157,7 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 rounded-md bg-white text-slate-900 border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
@@ -167,7 +167,7 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
                 type="text"
                 value={formData.jobId}
                 onChange={(e) => setFormData({ ...formData, jobId: e.target.value })}
-                className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 rounded-md bg-white text-slate-900 border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
@@ -177,7 +177,7 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
                 type="text"
                 value={formData.bjOrSite}
                 onChange={(e) => setFormData({ ...formData, bjOrSite: e.target.value })}
-                className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 rounded-md bg-white text-slate-900 border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
@@ -187,7 +187,7 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
                 type="text"
                 value={formData.routing}
                 onChange={(e) => setFormData({ ...formData, routing: e.target.value })}
-                className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 rounded-md bg-white text-slate-900 border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
@@ -198,7 +198,7 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
                   type="text"
                   value={formData.gpsCoordinates}
                   onChange={(e) => setFormData({ ...formData, gpsCoordinates: e.target.value })}
-                  className="flex-1 px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="flex-1 px-3 py-2 rounded-md bg-white text-slate-900 border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="Latitude, Longitude"
                 />
                 <button
@@ -223,7 +223,7 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
                 type="date"
                 value={formData.date}
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 rounded-md bg-white text-slate-900 border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
@@ -234,7 +234,7 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
                 type="time"
                 value={formData.timeBegin}
                 onChange={(e) => setFormData({ ...formData, timeBegin: e.target.value })}
-                className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 rounded-md bg-white text-slate-900 border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
@@ -244,7 +244,7 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
                 type="text"
                 value={formData.timeFinished}
                 onChange={(e) => setFormData({ ...formData, timeFinished: e.target.value })}
-                className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 rounded-md bg-white text-slate-900 border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="HH:mm"
               />
             </div>
@@ -254,7 +254,7 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
               <select
                 value={formData.status ? "complete" : "incomplete"}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value === "complete" })}
-                className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 rounded-md bg-white text-slate-900 border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="complete">Complete</option>
                 <option value="incomplete">Not Complete</option>
@@ -263,11 +263,11 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">Problem Details</label>
+            <label className="text-sm font-medium text-red-600">Problem Details</label>
             <textarea
               value={formData.problemDetails}
               onChange={(e) => setFormData({ ...formData, problemDetails: e.target.value })}
-              className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 rounded-md bg-white text-red-600 border-red-300 border text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
               rows={2}
               placeholder="Describe any issues or problems encountered"
             />
@@ -278,7 +278,7 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
             <textarea
               value={formData.effect}
               onChange={(e) => setFormData({ ...formData, effect: e.target.value })}
-              className="w-full px-3 py-2 rounded-md bg-white border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-3 py-2 rounded-md bg-white text-slate-900 border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               rows={3}
               placeholder="e.g. Excellent connection quality"
             />
